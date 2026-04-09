@@ -179,6 +179,8 @@ async function loadSermons() {
         const sermonsGrid = document.getElementById('sermonsGrid');
         const sermonsEmpty = document.getElementById('sermonsEmpty');
         
+        if (!sermonsGrid || !sermonsEmpty) return;
+
         const snapshot = await db.collection(Collections.SERMONS)
             .orderBy('date', 'desc')
             .limit(6)
@@ -193,6 +195,9 @@ async function loadSermons() {
                 const card = createSermonCard(sermon);
                 sermonsGrid.appendChild(card);
             });
+        } else {
+            sermonsEmpty.style.display = 'block';
+            sermonsGrid.innerHTML = '';
         }
     } catch (error) {
         console.error('Error loading sermons:', error);
@@ -238,6 +243,8 @@ async function loadEvents() {
         const eventsGrid = document.getElementById('eventsGrid');
         const eventsEmpty = document.getElementById('eventsEmpty');
         
+        if (!eventsGrid || !eventsEmpty) return;
+
         const snapshot = await db.collection(Collections.EVENTS)
             .orderBy('date', 'asc')
             .get();
@@ -251,6 +258,9 @@ async function loadEvents() {
                 const card = createEventCard(event);
                 eventsGrid.appendChild(card);
             });
+        } else {
+            eventsEmpty.style.display = 'block';
+            eventsGrid.innerHTML = '';
         }
     } catch (error) {
         console.error('Error loading events:', error);
@@ -282,20 +292,32 @@ async function loadTestimonies() {
         const testimoniesGrid = document.getElementById('testimoniesGrid');
         const testimoniesEmpty = document.getElementById('testimoniesEmpty');
         
+        if (!testimoniesGrid || !testimoniesEmpty) return;
+
+        // Fetch all testimonies ordered by date to avoid composite index requirement
         const snapshot = await db.collection(Collections.TESTIMONIES)
-            .where('approved', '==', true)
             .orderBy('submittedAt', 'desc')
             .get();
         
-        if (!snapshot.empty) {
+        const approvedTestimonies = [];
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.approved === true) {
+                approvedTestimonies.push(data);
+            }
+        });
+
+        if (approvedTestimonies.length > 0) {
             testimoniesEmpty.style.display = 'none';
             testimoniesGrid.innerHTML = '';
             
-            snapshot.forEach(doc => {
-                const testimony = doc.data();
+            approvedTestimonies.forEach(testimony => {
                 const card = createTestimonyCard(testimony);
                 testimoniesGrid.appendChild(card);
             });
+        } else {
+            testimoniesEmpty.style.display = 'block';
+            testimoniesGrid.innerHTML = '';
         }
     } catch (error) {
         console.error('Error loading testimonies:', error);
@@ -452,7 +474,6 @@ function setupRealtimeListeners() {
         });
     
     db.collection(Collections.TESTIMONIES)
-        .where('approved', '==', true)
         .onSnapshot(() => {
             loadTestimonies();
         });

@@ -112,8 +112,10 @@ function setupLogin() {
 }
 
 function showDashboard() {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('adminDashboard').style.display = 'flex';
+    const loginScreen = document.getElementById('loginScreen');
+    const adminDashboard = document.getElementById('adminDashboard');
+    if (loginScreen) loginScreen.style.display = 'none';
+    if (adminDashboard) adminDashboard.style.display = 'flex';
     loadAllData();
 }
 
@@ -163,12 +165,19 @@ async function loadThemeData() {
         const doc = await db.collection(Collections.SETTINGS).doc('theme').get();
         if (doc.exists) {
             const theme = doc.data();
-            document.getElementById('themeMode').value = theme.mode || 'light';
-            document.getElementById('primaryColor').value = theme.primaryColor || '#2c5f7a';
-            document.getElementById('secondaryColor').value = theme.secondaryColor || '#d946ef';
-            document.getElementById('accentColor').value = theme.accentColor || '#6366f1';
-            document.getElementById('logoUrl').value = theme.logoUrl || '';
-            document.getElementById('faviconUrl').value = theme.faviconUrl || '';
+            const themeMode = document.getElementById('themeMode');
+            const primaryColor = document.getElementById('primaryColor');
+            const secondaryColor = document.getElementById('secondaryColor');
+            const accentColor = document.getElementById('accentColor');
+            const logoUrl = document.getElementById('logoUrl');
+            const faviconUrl = document.getElementById('faviconUrl');
+
+            if (themeMode) themeMode.value = theme.mode || 'light';
+            if (primaryColor) primaryColor.value = theme.primaryColor || '#2c5f7a';
+            if (secondaryColor) secondaryColor.value = theme.secondaryColor || '#d946ef';
+            if (accentColor) accentColor.value = theme.accentColor || '#6366f1';
+            if (logoUrl) logoUrl.value = theme.logoUrl || '';
+            if (faviconUrl) faviconUrl.value = theme.faviconUrl || '';
         }
     } catch (error) {
         console.error('Error loading theme data:', error);
@@ -184,9 +193,13 @@ async function loadHeroData() {
         const doc = await db.collection(Collections.SETTINGS).doc('theme').get();
         if (doc.exists) {
             const theme = doc.data();
-            document.getElementById('heroImageUrl').value = theme.heroImage || '';
-            document.getElementById('heroTitleInput').value = theme.heroText || '';
-            document.getElementById('heroSubtextInput').value = theme.heroSubtext || '';
+            const heroImageUrl = document.getElementById('heroImageUrl');
+            const heroTitleInput = document.getElementById('heroTitleInput');
+            const heroSubtextInput = document.getElementById('heroSubtextInput');
+
+            if (heroImageUrl) heroImageUrl.value = theme.heroImage || '';
+            if (heroTitleInput) heroTitleInput.value = theme.heroText || '';
+            if (heroSubtextInput) heroSubtextInput.value = theme.heroSubtext || '';
         }
     } catch (error) {
         console.error('Error loading hero data:', error);
@@ -202,9 +215,13 @@ async function loadContentData() {
         const doc = await db.collection(Collections.CONTENT).doc('about').get();
         if (doc.exists) {
             const content = doc.data();
-            document.getElementById('missionInput').value = content.mission || '';
-            document.getElementById('visionInput').value = content.vision || '';
-            document.getElementById('welcomeInput').value = content.welcomeMessage || '';
+            const missionInput = document.getElementById('missionInput');
+            const visionInput = document.getElementById('visionInput');
+            const welcomeInput = document.getElementById('welcomeInput');
+
+            if (missionInput) missionInput.value = content.mission || '';
+            if (visionInput) visionInput.value = content.vision || '';
+            if (welcomeInput) welcomeInput.value = content.welcomeMessage || '';
         }
     } catch (error) {
         console.error('Error loading content data:', error);
@@ -222,21 +239,30 @@ async function loadServicesData() {
             const schedule = doc.data();
             
             if (schedule.sunday) {
-                document.getElementById('sundayTitle').value = schedule.sunday.title || '';
-                document.getElementById('sundayTime').value = schedule.sunday.time || '';
-                document.getElementById('sundayDescription').value = schedule.sunday.description || '';
+                const sundayTitle = document.getElementById('sundayTitle');
+                const sundayTime = document.getElementById('sundayTime');
+                const sundayDescription = document.getElementById('sundayDescription');
+                if (sundayTitle) sundayTitle.value = schedule.sunday.title || '';
+                if (sundayTime) sundayTime.value = schedule.sunday.time || '';
+                if (sundayDescription) sundayDescription.value = schedule.sunday.description || '';
             }
             
             if (schedule.midweek) {
-                document.getElementById('midweekTitle').value = schedule.midweek.title || '';
-                document.getElementById('midweekTime').value = schedule.midweek.time || '';
-                document.getElementById('midweekDescription').value = schedule.midweek.description || '';
+                const midweekTitle = document.getElementById('midweekTitle');
+                const midweekTime = document.getElementById('midweekTime');
+                const midweekDescription = document.getElementById('midweekDescription');
+                if (midweekTitle) midweekTitle.value = schedule.midweek.title || '';
+                if (midweekTime) midweekTime.value = schedule.midweek.time || '';
+                if (midweekDescription) midweekDescription.value = schedule.midweek.description || '';
             }
             
             if (schedule.special) {
-                document.getElementById('specialTitle').value = schedule.special.title || '';
-                document.getElementById('specialTime').value = schedule.special.time || '';
-                document.getElementById('specialDescription').value = schedule.special.description || '';
+                const specialTitle = document.getElementById('specialTitle');
+                const specialTime = document.getElementById('specialTime');
+                const specialDescription = document.getElementById('specialDescription');
+                if (specialTitle) specialTitle.value = schedule.special.title || '';
+                if (specialTime) specialTime.value = schedule.special.time || '';
+                if (specialDescription) specialDescription.value = schedule.special.description || '';
             }
         }
     } catch (error) {
@@ -254,14 +280,22 @@ async function loadContactData() {
         if (doc.exists) {
             const contact = doc.data();
             
-            document.getElementById('contactEmailAdmin').value = contact.email || '';
-            document.getElementById('contactPhoneAdmin').value = contact.phone || '';
-            document.getElementById('contactAddressAdmin').value = contact.address || '';
+            const contactEmailAdmin = document.getElementById('contactEmailAdmin');
+            const contactPhoneAdmin = document.getElementById('contactPhoneAdmin');
+            const contactAddressAdmin = document.getElementById('contactAddressAdmin');
+
+            if (contactEmailAdmin) contactEmailAdmin.value = contact.email || '';
+            if (contactPhoneAdmin) contactPhoneAdmin.value = contact.phone || '';
+            if (contactAddressAdmin) contactAddressAdmin.value = contact.address || '';
             
             if (contact.offeringAccount) {
-                document.getElementById('offeringBankAdmin').value = contact.offeringAccount.bank || '';
-                document.getElementById('offeringAccountNumberAdmin').value = contact.offeringAccount.accountNumber || '';
-                document.getElementById('offeringAccountNameAdmin').value = contact.offeringAccount.accountName || '';
+                const offeringBankAdmin = document.getElementById('offeringBankAdmin');
+                const offeringAccountNumberAdmin = document.getElementById('offeringAccountNumberAdmin');
+                const offeringAccountNameAdmin = document.getElementById('offeringAccountNameAdmin');
+
+                if (offeringBankAdmin) offeringBankAdmin.value = contact.offeringAccount.bank || '';
+                if (offeringAccountNumberAdmin) offeringAccountNumberAdmin.value = contact.offeringAccount.accountNumber || '';
+                if (offeringAccountNameAdmin) offeringAccountNameAdmin.value = contact.offeringAccount.accountName || '';
             }
         }
     } catch (error) {
@@ -403,21 +437,27 @@ async function loadPendingTestimonies() {
         const pendingList = document.getElementById('pendingTestimoniesList');
         pendingList.innerHTML = '';
         
+        // Fetch all testimonies ordered by date to avoid composite index requirement
         const snapshot = await db.collection(Collections.TESTIMONIES)
-            .where('approved', '==', false)
             .orderBy('submittedAt', 'desc')
             .get();
         
-        if (snapshot.empty) {
-            pendingList.innerHTML = '<p style="text-align: center; opacity: 0.6;">No pending testimonies</p>';
-            return;
-        }
-        
+        const pendingTestimonies = [];
         snapshot.forEach(doc => {
-            const testimony = doc.data();
-            const card = createTestimonyPendingCard(doc.id, testimony);
-            pendingList.appendChild(card);
+            const data = doc.data();
+            if (data.approved === false) {
+                pendingTestimonies.push({ id: doc.id, ...data });
+            }
         });
+
+        if (pendingTestimonies.length > 0) {
+            pendingTestimonies.forEach(testimony => {
+                const card = createTestimonyPendingCard(testimony.id, testimony);
+                pendingList.appendChild(card);
+            });
+        } else {
+            pendingList.innerHTML = '<p style="text-align: center; opacity: 0.6;">No pending testimonies</p>';
+        }
     } catch (error) {
         console.error('Error loading pending testimonies:', error);
     }
@@ -428,21 +468,27 @@ async function loadApprovedTestimonies() {
         const approvedList = document.getElementById('approvedTestimoniesList');
         approvedList.innerHTML = '';
         
+        // Fetch all testimonies ordered by date to avoid composite index requirement
         const snapshot = await db.collection(Collections.TESTIMONIES)
-            .where('approved', '==', true)
             .orderBy('submittedAt', 'desc')
             .get();
         
-        if (snapshot.empty) {
-            approvedList.innerHTML = '<p style="text-align: center; opacity: 0.6;">No approved testimonies</p>';
-            return;
-        }
-        
+        const approvedTestimonies = [];
         snapshot.forEach(doc => {
-            const testimony = doc.data();
-            const card = createTestimonyApprovedCard(doc.id, testimony);
-            approvedList.appendChild(card);
+            const data = doc.data();
+            if (data.approved === true) {
+                approvedTestimonies.push({ id: doc.id, ...data });
+            }
         });
+
+        if (approvedTestimonies.length > 0) {
+            approvedTestimonies.forEach(testimony => {
+                const card = createTestimonyApprovedCard(testimony.id, testimony);
+                approvedList.appendChild(card);
+            });
+        } else {
+            approvedList.innerHTML = '<p style="text-align: center; opacity: 0.6;">No approved testimonies</p>';
+        }
     } catch (error) {
         console.error('Error loading approved testimonies:', error);
     }

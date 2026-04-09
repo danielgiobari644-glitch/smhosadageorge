@@ -1,24 +1,22 @@
-/* ========================================
-   Salvation Ministries Ada George - Modern Styles
-   Clean, professional design with solid colors and clear typography
-   ======================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap');
 
 :root {
     --primary-color: #2c5f7a;
     --secondary-color: #d946ef;
     --accent-color: #6366f1;
     --text-dark: #0f172a;
+    --text-muted: #64748b;
     --text-light: #f8fafc;
-    --bg-light: #f1f5f9;
+    --bg-light: #f8fafc;
     --bg-white: #ffffff;
     --bg-card: #ffffff;
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --transition: all 0.2s ease-in-out;
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     
     /* Typography */
-    --font-display: 'Inter', sans-serif;
+    --font-display: 'Outfit', sans-serif;
     --font-body: 'Inter', sans-serif;
     
     /* Spacing */
@@ -33,6 +31,7 @@
 /* Dark Mode Variables */
 body.dark-mode {
     --text-dark: #f8fafc;
+    --text-muted: #94a3b8;
     --text-light: #0f172a;
     --bg-light: #0f172a;
     --bg-white: #1e293b;
@@ -53,7 +52,8 @@ body {
     font-family: var(--font-body);
     color: var(--text-dark);
     background: var(--bg-light);
-    line-height: 1.5;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
 }
 
 .container {
@@ -68,22 +68,30 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background: var(--bg-white);
-    border-bottom: 1px solid #e2e8f0;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
     z-index: 1000;
+}
+
+body.dark-mode .navbar {
+    background: rgba(30, 41, 59, 0.8);
+    border-bottom-color: rgba(51, 65, 85, 0.8);
 }
 
 .nav-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem var(--spacing-lg);
+    padding: 0.75rem var(--spacing-lg);
 }
 
 .nav-logo {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    font-family: var(--font-display);
     font-weight: 700;
     font-size: 1.25rem;
     color: var(--primary-color);
@@ -92,6 +100,7 @@ body {
 .nav-logo img {
     width: 40px;
     height: 40px;
+    border-radius: 8px;
 }
 
 .nav-menu {
@@ -102,8 +111,9 @@ body {
 
 .nav-link {
     font-weight: 500;
-    color: #64748b;
+    color: var(--text-muted);
     transition: var(--transition);
+    font-size: 0.95rem;
 }
 
 .nav-link:hover {
@@ -112,84 +122,174 @@ body {
 
 /* Hero Section */
 .hero {
-    padding: 120px 0 80px;
-    background: var(--primary-color);
+    padding: 160px 0 100px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
     color: white;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://www.transparenttextures.com/patterns/cubes.png');
+    opacity: 0.05;
+    pointer-events: none;
 }
 
 .hero-title {
-    font-size: 3rem;
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 800;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
 }
 
 .hero-subtitle {
     font-size: 1.25rem;
     opacity: 0.9;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 400;
 }
 
 .btn {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.875rem 1.75rem;
+    border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
     transition: var(--transition);
     border: none;
+    font-family: var(--font-body);
+    font-size: 1rem;
 }
 
 .btn-primary {
     background: white;
     color: var(--primary-color);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .btn-secondary {
-    background: transparent;
-    border: 1px solid white;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;
     margin-left: 1rem;
 }
 
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
 /* Sections */
 section {
-    padding: 80px 0;
+    padding: 100px 0;
 }
 
 .section-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
 }
 
 .section-title {
-    font-size: 2.25rem;
+    font-family: var(--font-display);
+    font-size: 2.5rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--text-dark);
+    letter-spacing: -0.01em;
 }
 
 .about-grid, .services-grid, .sermons-grid, .events-grid, .testimonies-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
 }
 
 .about-card, .service-card, .sermon-card, .event-card, .testimony-card {
-    background: var(--bg-white);
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: var(--shadow-md);
+    background: var(--bg-card);
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    transition: var(--transition);
+}
+
+body.dark-mode .about-card, 
+body.dark-mode .service-card, 
+body.dark-mode .sermon-card, 
+body.dark-mode .event-card, 
+body.dark-mode .testimony-card {
+    border-color: rgba(51, 65, 85, 0.8);
+}
+
+.about-card:hover, .service-card:hover, .sermon-card:hover, .event-card:hover, .testimony-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+}
+
+.about-card h3, .service-card h3, .sermon-card h3, .event-card h3, .testimony-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.about-card p, .service-card p, .sermon-card p, .event-card p, .testimony-card p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.7;
 }
 
 .service-card {
-    border-top: 4px solid var(--primary-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--primary-color);
+}
+
+.service-time {
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.75rem;
+    display: block;
+    font-size: 1.1rem;
 }
 
 .sermon-video {
     position: relative;
     padding-bottom: 56.25%;
     height: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .sermon-video iframe {
@@ -198,46 +298,99 @@ section {
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 4px;
+    border: none;
 }
 
 .offering-card {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    padding: 3rem;
-    border-radius: 12px;
+    background: var(--bg-card);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    padding: 4rem;
+    border-radius: 24px;
     text-align: center;
+    box-shadow: var(--shadow-md);
 }
 
 .contact-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1.5fr;
     gap: 4rem;
 }
 
+.contact-item {
+    margin-bottom: 2.5rem;
+}
+
+.contact-item h4 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
 .form-group {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
 }
 
 .form-group input, .form-group textarea {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
+    padding: 0.875rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: var(--transition);
+    background: var(--bg-white);
+    color: var(--text-dark);
+}
+
+body.dark-mode .form-group input, 
+body.dark-mode .form-group textarea {
+    border-color: #334155;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(44, 95, 122, 0.1);
 }
 
 .footer {
-    padding: 40px 0;
+    padding: 60px 0;
     background: #0f172a;
     color: white;
     text-align: center;
 }
 
-@media (max-width: 768px) {
+.footer p {
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 968px) {
     .contact-grid {
         grid-template-columns: 1fr;
-    }
-    .hero-title {
-        font-size: 2rem;
+        gap: 3rem;
     }
 }
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    .section-title {
+        font-size: 2rem;
+    }
+    .nav-menu {
+        display: none;
+    }
+}
+
