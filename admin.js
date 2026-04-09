@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   waitForFirebase().then(() => {
     console.log('Firebase ready, initializing admin...');
     initializeAdmin();
+    loadThemeSettings(); // Apply theme to admin dashboard
   });
 });
 
@@ -16,6 +17,39 @@ function initializeAdmin() {
     setupLogin();
     setupNavigation();
     setupForms();
+}
+
+// ========================================
+// Theme Settings Application
+// ========================================
+
+async function loadThemeSettings() {
+    try {
+        const doc = await db.collection(Collections.SETTINGS).doc('theme').get();
+        if (doc.exists) {
+            const theme = doc.data();
+            
+            // Update CSS variables
+            if (theme.primaryColor) {
+                document.documentElement.style.setProperty('--primary-color', theme.primaryColor);
+            }
+            if (theme.secondaryColor) {
+                document.documentElement.style.setProperty('--secondary-color', theme.secondaryColor);
+            }
+            if (theme.accentColor) {
+                document.documentElement.style.setProperty('--accent-color', theme.accentColor);
+            }
+            
+            // Apply dark mode if set
+            if (theme.mode === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        }
+    } catch (error) {
+        console.error('Error loading theme settings:', error);
+    }
 }
 
 // ========================================
@@ -75,12 +109,6 @@ function setupLogin() {
             showFeedback(loginFeedback, `Error: ${error.message}. Please try again.`, 'error');
         }
     });
-    
-    // Logout
-    document.getElementById('logoutBtn')?.addEventListener('click', () => {
-        sessionStorage.removeItem('adminLoggedIn');
-        location.reload();
-    });
 }
 
 function showDashboard() {
@@ -136,9 +164,9 @@ async function loadThemeData() {
         if (doc.exists) {
             const theme = doc.data();
             document.getElementById('themeMode').value = theme.mode || 'light';
-            document.getElementById('primaryColor').value = theme.primaryColor || '#6366f1';
-            document.getElementById('secondaryColor').value = theme.secondaryColor || '#ec4899';
-            document.getElementById('accentColor').value = theme.accentColor || '#8b5cf6';
+            document.getElementById('primaryColor').value = theme.primaryColor || '#2c5f7a';
+            document.getElementById('secondaryColor').value = theme.secondaryColor || '#d946ef';
+            document.getElementById('accentColor').value = theme.accentColor || '#6366f1';
             document.getElementById('logoUrl').value = theme.logoUrl || '';
             document.getElementById('faviconUrl').value = theme.faviconUrl || '';
         }
@@ -282,7 +310,7 @@ function createSermonAdminCard(id, sermon) {
             ${sermon.description ? `<p style="opacity: 0.7;">${sermon.description}</p>` : ''}
         </div>
         <div class="item-actions">
-            <button class="btn-admin btn-danger btn-small" onclick="deleteSermon('${id}')">Delete</button>
+            <button class="btn-admin" style="background: #ef4444;" onclick="deleteSermon('${id}')">Delete</button>
         </div>
     `;
     
@@ -342,7 +370,7 @@ function createEventAdminCard(id, event) {
             <p style="opacity: 0.7;">${event.description}</p>
         </div>
         <div class="item-actions">
-            <button class="btn-admin btn-danger btn-small" onclick="deleteEvent('${id}')">Delete</button>
+            <button class="btn-admin" style="background: #ef4444;" onclick="deleteEvent('${id}')">Delete</button>
         </div>
     `;
     
@@ -433,8 +461,8 @@ function createTestimonyPendingCard(id, testimony) {
             <p style="opacity: 0.7; font-style: italic;">"${testimony.message}"</p>
         </div>
         <div class="item-actions">
-            <button class="btn-admin btn-success btn-small" onclick="approveTestimony('${id}')">Approve</button>
-            <button class="btn-admin btn-danger btn-small" onclick="rejectTestimony('${id}')">Reject</button>
+            <button class="btn-admin" style="background: #10b981; margin-right: 0.5rem;" onclick="approveTestimony('${id}')">Approve</button>
+            <button class="btn-admin" style="background: #ef4444;" onclick="rejectTestimony('${id}')">Reject</button>
         </div>
     `;
     
@@ -454,7 +482,7 @@ function createTestimonyApprovedCard(id, testimony) {
             <p style="opacity: 0.7; font-style: italic;">"${testimony.message}"</p>
         </div>
         <div class="item-actions">
-            <button class="btn-admin btn-danger btn-small" onclick="deleteTestimony('${id}')">Delete</button>
+            <button class="btn-admin" style="background: #ef4444;" onclick="deleteTestimony('${id}')">Delete</button>
         </div>
     `;
     
@@ -514,7 +542,6 @@ function setupForms() {
                 accentColor: document.getElementById('accentColor').value
             };
             
-            // Add logo and favicon if provided
             const logoUrl = document.getElementById('logoUrl').value.trim();
             const faviconUrl = document.getElementById('faviconUrl').value.trim();
             
@@ -522,6 +549,10 @@ function setupForms() {
             if (faviconUrl) updates.faviconUrl = faviconUrl;
             
             await db.collection(Collections.SETTINGS).doc('theme').update(updates);
+            
+            // Re-apply theme to dashboard immediately
+            loadThemeSettings();
+            
             alert('Theme settings saved successfully!');
         } catch (error) {
             console.error('Error saving theme:', error);

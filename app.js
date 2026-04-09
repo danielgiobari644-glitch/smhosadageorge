@@ -22,9 +22,6 @@ function initializeSite() {
     setupTestimonyForm();
     setupContactForm();
     
-    // Setup scroll animations
-    setupScrollAnimations();
-    
     // Listen for real-time updates
     setupRealtimeListeners();
 }
@@ -56,16 +53,6 @@ function setupNavigation() {
             }
         });
     });
-    
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-        const navbar = document.getElementById('navbar');
-        if (window.scrollY > 100) {
-            navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
-        } else {
-            navbar.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)';
-        }
-    });
 }
 
 // ========================================
@@ -94,33 +81,7 @@ async function loadThemeSettings() {
                 const logos = document.querySelectorAll('.nav-logo img, .footer-logo img');
                 logos.forEach(logo => {
                     logo.src = theme.logoUrl;
-                    logo.onerror = () => {
-                        logo.src = '/mnt/user-data/uploads/1775217322747_image.png';
-                    };
                 });
-            }
-            
-            // Update favicon
-            if (theme.faviconUrl) {
-                let favicon = document.querySelector('link[rel="icon"]');
-                if (!favicon) {
-                    favicon = document.createElement('link');
-                    favicon.rel = 'icon';
-                    document.head.appendChild(favicon);
-                }
-                favicon.href = theme.faviconUrl;
-            }
-            
-            // Update hero section
-            const hero = document.querySelector('.hero');
-            if (hero && theme.heroImage) {
-                hero.style.background = `linear-gradient(135deg, 
-                    rgba(99, 102, 241, 0.95), 
-                    rgba(236, 72, 153, 0.9)),
-                    url('${theme.heroImage}')`;
-                hero.style.backgroundSize = 'cover';
-                hero.style.backgroundPosition = 'center';
-                hero.style.backgroundAttachment = 'fixed';
             }
             
             // Update hero text
@@ -240,9 +201,8 @@ async function loadSermons() {
 
 function createSermonCard(sermon) {
     const card = document.createElement('div');
-    card.className = 'sermon-card fade-in';
+    card.className = 'sermon-card';
     
-    // Extract YouTube video ID
     const videoId = extractYouTubeId(sermon.videoUrl);
     
     card.innerHTML = `
@@ -250,13 +210,12 @@ function createSermonCard(sermon) {
             <iframe 
                 src="https://www.youtube.com/embed/${videoId}" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen
-                loading="lazy">
+                allowfullscreen>
             </iframe>
         </div>
         <div class="sermon-info">
-            <h3 class="sermon-title">${sermon.title}</h3>
-            <div class="sermon-date">${formatDate(sermon.date)}</div>
+            <h3 class="sermon-title" style="color: var(--primary-color); font-weight: 700;">${sermon.title}</h3>
+            <div class="sermon-date" style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.5rem;">${formatDate(sermon.date)}</div>
             ${sermon.description ? `<p class="sermon-description">${sermon.description}</p>` : ''}
         </div>
     `;
@@ -300,13 +259,13 @@ async function loadEvents() {
 
 function createEventCard(event) {
     const card = document.createElement('div');
-    card.className = 'event-card fade-in';
+    card.className = 'event-card';
     
     card.innerHTML = `
-        <img src="${event.imageUrl}" alt="${event.title}" class="event-image" onerror="this.src='https://images.unsplash.com/photo-1506157786151-b8491531f063?w=800&q=80'">
-        <div class="event-content">
-            <div class="event-date">${formatDate(event.date)}</div>
-            <h3 class="event-title">${event.title}</h3>
+        <img src="${event.imageUrl}" alt="${event.title}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 4px;">
+        <div class="event-content" style="padding-top: 1rem;">
+            <div class="event-date" style="font-size: 0.85rem; color: var(--secondary-color); font-weight: 700;">${formatDate(event.date)}</div>
+            <h3 class="event-title" style="color: var(--primary-color); font-weight: 700;">${event.title}</h3>
             <p class="event-description">${event.description}</p>
         </div>
     `;
@@ -345,12 +304,11 @@ async function loadTestimonies() {
 
 function createTestimonyCard(testimony) {
     const card = document.createElement('div');
-    card.className = 'testimony-card fade-in';
+    card.className = 'testimony-card';
     
     card.innerHTML = `
-        <p class="testimony-message">${testimony.message}</p>
-        <div class="testimony-author">${testimony.name}</div>
-        <div class="testimony-date">${formatDate(testimony.submittedAt)}</div>
+        <p class="testimony-message" style="font-style: italic; margin-bottom: 1rem;">"${testimony.message}"</p>
+        <div class="testimony-author" style="font-weight: 700; color: var(--primary-color); text-align: right;">- ${testimony.name}</div>
     `;
     
     return card;
@@ -460,16 +418,8 @@ function setupContactForm() {
             return;
         }
         
-        if (!isValidEmail(email)) {
-            showFeedback(feedback, 'Please enter a valid email address', 'error');
-            return;
-        }
-        
         try {
-            // In a real application, you would send this to a backend or email service
-            // For now, we'll just show a success message
             console.log('Contact form submitted:', { name, email, message });
-            
             form.reset();
             showFeedback(feedback, 'Thank you for your message! We will get back to you soon.', 'success');
         } catch (error) {
@@ -480,34 +430,10 @@ function setupContactForm() {
 }
 
 // ========================================
-// Scroll Animations
-// ========================================
-
-function setupScrollAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.animation = 'fadeIn 0.8s ease-out forwards';
-            }
-        });
-    }, observerOptions);
-    
-    document.querySelectorAll('.fade-in, .about-card, .service-card, .sermon-card, .event-card, .testimony-card').forEach(el => {
-        observer.observe(el);
-    });
-}
-
-// ========================================
 // Real-time Listeners
 // ========================================
 
 function setupRealtimeListeners() {
-    // Listen for theme changes
     db.collection(Collections.SETTINGS).doc('theme')
         .onSnapshot((doc) => {
             if (doc.exists) {
@@ -515,19 +441,16 @@ function setupRealtimeListeners() {
             }
         });
     
-    // Listen for sermon updates
     db.collection(Collections.SERMONS)
         .onSnapshot(() => {
             loadSermons();
         });
     
-    // Listen for event updates
     db.collection(Collections.EVENTS)
         .onSnapshot(() => {
             loadEvents();
         });
     
-    // Listen for approved testimony updates
     db.collection(Collections.TESTIMONIES)
         .where('approved', '==', true)
         .onSnapshot(() => {
@@ -546,11 +469,6 @@ function showFeedback(element, message, type) {
     setTimeout(() => {
         element.className = 'form-feedback';
     }, 5000);
-}
-
-function isValidEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
 }
 
 function formatDate(timestamp) {
