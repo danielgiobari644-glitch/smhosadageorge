@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Salvation Ministries</title>
+    <link rel="icon" type="image/png" href="/mnt/user-data/uploads/1775217322747_image.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Playfair+Display:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* Admin-specific styles */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+            background: var(--bg-light);
+        }
+        
+        .admin-sidebar {
+            width: 280px;
+            background: var(--bg-white);
+            box-shadow: var(--shadow-md);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        
+        .admin-logo {
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .admin-logo img {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+        }
+        
+        .admin-logo h2 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--primary-color);
+        }
+        
+        .admin-nav {
+            padding: 1.5rem 0;
+        }
+        
+        .admin-nav-item {
+            padding: 1rem 2rem;
+            display: block;
+            color: var(--text-dark);
+            transition: var(--transition);
+            cursor: pointer;
+            border-left: 4px solid transparent;
+        }
+        
+        .admin-nav-item:hover {
+            background: var(--bg-light);
+            border-left-color: var(--secondary-color);
+        }
+        
+        .admin-nav-item.active {
+            background: var(--bg-light);
+            border-left-color: var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .admin-main {
+            margin-left: 280px;
+            flex: 1;
+            padding: 2rem;
+            width: calc(100% - 280px);
+        }
+        
+        .admin-header {
+            background: var(--bg-white);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-header h1 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            color: var(--primary-color);
+        }
+        
+        .admin-panel {
+            display: none;
+        }
+        
+        .admin-panel.active {
+            display: block;
+        }
+        
+        .admin-card {
+            background: var(--bg-white);
+            padding: 2.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .admin-card h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid rgba(44, 95, 122, 0.2);
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input[type="color"] {
+            height: 60px;
+            cursor: pointer;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(44, 95, 122, 0.1);
+        }
+        
+        .btn-admin {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-admin:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #218838);
+        }
+        
+        .item-list {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .item-card {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .item-info {
+            flex: 1;
+        }
+        
+        .item-info h3 {
+            font-family: var(--font-display);
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .login-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .login-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .login-logo img {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+        }
+        
+        .login-logo h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .logout-btn {
+            padding: 0.7rem 1.5rem;
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .logout-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        @media (max-width: 968px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+                transition: var(--transition);
+            }
+            
+            .admin-sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .admin-main {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-card">
+            <div class="login-logo">
+                <img src="/mnt/user-data/uploads/1775217322747_image.png" alt="Logo">
+                <h2>Admin Login</h2>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="loginUsername" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn-admin" style="width: 100%; margin-top: 1rem;">Login</button>
+                <div id="loginFeedback" class="form-feedback"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="admin-container" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <img src="/mnt/user-data/uploads/1775217322747_image.png" alt="Logo">
+                <h2>Admin Panel</h2>
+            </div>
+            <nav class="admin-nav">
+                <a class="admin-nav-item active" data-panel="theme">Theme Settings</a>
+                <a class="admin-nav-item" data-panel="hero">Hero Section</a>
+                <a class="admin-nav-item" data-panel="content">Content</a>
+                <a class="admin-nav-item" data-panel="services">Service Times</a>
+                <a class="admin-nav-item" data-panel="sermons">Sermons</a>
+                <a class="admin-nav-item" data-panel="events">Events</a>
+                <a class="admin-nav-item" data-panel="testimonies">Testimonies</a>
+                <a class="admin-nav-item" data-panel="contact">Contact Info</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="admin-header">
+                <h1>Dashboard</h1>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <a href="index.html" class="logout-btn">View Site</a>
+                    <button id="logoutBtn" class="logout-btn">Logout</button>
+                </div>
+            </div>
+
+            <!-- Theme Settings Panel -->
+            <div id="themePanel" class="admin-panel active">
+                <div class="admin-card">
+                    <h2>Theme Settings</h2>
+                    <form id="themeForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Theme Mode</label>
+                                <select id="themeMode">
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Primary Color</label>
+                                <input type="color" id="primaryColor" value="#6366f1">
+                            </div>
+                            <div class="form-group">
+                                <label>Secondary Color</label>
+                                <input type="color" id="secondaryColor" value="#ec4899">
+                            </div>
+                            <div class="form-group">
+                                <label>Accent Color</label>
+                                <input type="color" id="accentColor" value="#8b5cf6">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Logo URL</label>
+                                <input type="url" id="logoUrl" placeholder="https://example.com/logo.png">
+                                <small style="color: var(--secondary-color); display: block; margin-top: 0.5rem;">
+                                    Upload your logo to an image hosting service and paste the URL here
+                                </small>
+                            </div>
+                            <div class="form-group">
+                                <label>Favicon URL</label>
+                                <input type="url" id="faviconUrl" placeholder="https://example.com/favicon.png">
+                                <small style="color: var(--secondary-color); display: block; margin-top: 0.5rem;">
+                                    Upload your favicon (browser tab icon) and paste the URL here
+                                </small>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-admin">Save Theme Settings</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Hero Section Panel -->
+            <div id="heroPanel" class="admin-panel">
+                <div class="admin-card">
+                    <h2>Hero Section</h2>
+                    <form id="heroForm">
+                        <div class="form-group">
+                            <label>Background Image URL</label>
+                            <input type="url" id="heroImageUrl" placeholder="https://example.com/image.jpg">
+                        </div>
+                        <div class="form-group">
+                            <label>Hero Title</label>
+                            <input type="text" id="heroTitleInput" placeholder="Welcome to Salvation Ministries">
+                        </div>
+                        <div class="form-group">
+                            <label>Hero Subtitle</label>
+                            <input type="text" id="heroSubtextInput" placeholder="Where Faith Meets Purpose">
+                        </div>
+                        <button type="submit" class="btn-admin">Save Hero Settings</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Content Panel -->
+            <div id="contentPanel" class="admin-panel">
+                <div class="admin-card">
+                    <h2>About Us Content</h2>
+                    <form id="contentForm">
+                        <div class="form-group">
+                            <label>Mission Statement</label>
+                            <textarea id="missionInput" rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Vision Statement</label>
+                            <textarea id="visionInput" rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Welcome Message</label>
+                            <textarea id="welcomeInput" rows="4"></textarea>
+                        </div>
+                        <button type="submit" class="btn-admin">Save Content</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Services Panel -->
+            <div id="servicesPanel" class="admin-panel">
+                <div class="admin-card">
+                    <h2>Service Times</h2>
+                    <form id="servicesForm">
+                        <h3 style="margin: 2rem 0 1rem; color: var(--primary-color);">Sunday Service</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" id="sundayTitle">
+                            </div>
+                            <div class="form-group">
+                                <label>Time</label>
+                                <input type="text" id="sundayTime">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="sundayDescription" rows="2"></textarea>
+                        </div>
+
+                        <h3 style="margin: 2rem 0 1rem; color: var(--primary-color);">Midweek Service</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" id="midweekTitle">
+                            </div>
+                            <div class="form-group">
+                                <label>Time</label>
+                                <input type="text" id="midweekTime">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="midweekDescription" rows="2"></textarea>
+                        </div>
+
+                        <h3 style="margin: 2rem 0 1rem; color: var(--primary-color);">Special Programs</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" id="specialTitle">
+                            </div>
+                            <div class="form-group">
+                                <label>Time</label>
+                                <input type="text" id="specialTime">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="specialDescription" rows="2"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-admin">Save Service Times</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Sermons Panel -->
+            <div id="sermonsPanel" class="admin-panel">
+                <div class="admin-card">
+                    <h2>Manage Sermons</h2>
+                    <form id="sermonForm">
+                        <div class="form-group">
+                            <label>Sermon Title</label>
+                            <input type="text" id="sermonTitle" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>YouTube Video URL</label>
+                                <input type="url" id="sermonVideoUrl" placeholder="https://youtube.com/watch?v=..." required>
+                            </div>
+                            <div class="form-group">
+                                <label>Date</label>
+                                <input type="date" id="sermonDate" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Description (Optional)</label>
+                            <textarea id="sermonDescription" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn-admin">Add Sermon</button>
+                    </form>
+                    <div id="sermonsList" class="item-list"></div>
+                </div>
+            </div>
+
+            <!-- Events Panel -->
+            <div id="eventsPanel" class="admin-panel">
+                <div class="admin-card">
+                    <h2>Manage Events</h2>
+                    <form id="eventForm">
+                        <div class="form-group">
+                            <label>Event Title</label>
+                            <input type="text" id="eventTitle" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Event Image URL</label>
+                                <input type="url" id="eventImageUrl" placeholder="https://example.com/image.jpg" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Event Date</label>
+                                <input type="date" id="eventDate" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Event Description</label>
+                            <textarea id="eventDescription" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-admin">Add Event</button>
+                    </form>
+                    <div id="eventsList" class="item-list"></div>
+                </div>
+            </div>
+
+            <!-- Testimonies Panel -->
+            <div id="testimoniesPanel" class="admin-panel">
+                <div class="admin-card">
+                    <h2>Manage Testimonies</h2>
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Pending Approval</h3>
+                    <div id="pendingTestimoniesList" class="item-list"></div>
+
+                    <h3 style="color: var(--primary-color); margin: 3rem 0 1rem;">Approved Testimonies</h3>
+                    <div id="approvedTestimoniesList" class="item-list"></div>
+
+                    <h3 style="color: var(--primary-color); margin: 3rem 0 1rem;">Add Testimony Manually</h3>
+                    <form id="testimonyManualForm">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" id="testimonyManualName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Testimony Message</label>
+                            <textarea id="testimonyManualMessage" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-admin">Add Testimony</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Contact Panel -->
+            <div id="contactPanel" class="admin-panel">
+                <div class="admin-card">
+                    <h2>Contact Information</h2>
+                    <form id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="contactEmailAdmin">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="tel" id="contactPhoneAdmin">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Address</label>
+                            <textarea id="contactAddressAdmin" rows="2"></textarea>
+                        </div>
+
+                        <h3 style="margin: 2rem 0 1rem; color: var(--primary-color);">Offering Account Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Bank Name</label>
+                                <input type="text" id="offeringBankAdmin">
+                            </div>
+                            <div class="form-group">
+                                <label>Account Number</label>
+                                <input type="text" id="offeringAccountNumberAdmin">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Account Name</label>
+                            <input type="text" id="offeringAccountNameAdmin">
+                        </div>
+
+                        <button type="submit" class="btn-admin">Save Contact Information</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

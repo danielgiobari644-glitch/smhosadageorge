@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salvation Ministries Ada George</title>
+    <link rel="icon" type="image/png" href="/mnt/user-data/uploads/1775217322747_image.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Playfair+Display:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="/mnt/user-data/uploads/1775217322747_image.png" alt="Salvation Ministries Logo">
+                <span>Salvation Ministries</span>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#sermons" class="nav-link">Sermons</a></li>
+                <li><a href="#events" class="nav-link">Events</a></li>
+                <li><a href="#testimonies" class="nav-link">Testimonies</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="admin.html" class="nav-link admin-link">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title" id="heroTitle">Welcome to Salvation Ministries Ada George</h1>
+            <p class="hero-subtitle" id="heroSubtext">Where Faith Meets Purpose</p>
+            <div class="hero-cta">
+                <a href="#about" class="btn btn-primary">Discover More</a>
+                <a href="#sermons" class="btn btn-secondary">Watch Sermons</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">About Us</span>
+                <h2 class="section-title">Our Faith Community</h2>
+            </div>
+            <div class="about-grid">
+                <div class="about-card fade-in">
+                    <div class="about-icon">🙏</div>
+                    <h3>Our Mission</h3>
+                    <p id="missionText">To spread the Gospel of Jesus Christ and transform lives through biblical teaching and community service.</p>
+                </div>
+                <div class="about-card fade-in">
+                    <div class="about-icon">✨</div>
+                    <h3>Our Vision</h3>
+                    <p id="visionText">Building a community of believers who live out their faith with passion and purpose.</p>
+                </div>
+                <div class="about-card fade-in">
+                    <div class="about-icon">💖</div>
+                    <h3>Welcome Message</h3>
+                    <p id="welcomeText">We are a vibrant community of believers committed to worshipping God, studying His Word, and serving our community with love and compassion.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Times Section -->
+    <section class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Join Us</span>
+                <h2 class="section-title">Service Times</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card" id="sundayService">
+                    <div class="service-day">Sunday</div>
+                    <h3 class="service-title">Sunday Worship Service</h3>
+                    <div class="service-time">8:00 AM - 11:00 AM</div>
+                    <p class="service-description">Join us for praise, worship, and powerful biblical teaching</p>
+                </div>
+                <div class="service-card" id="midweekService">
+                    <div class="service-day">Wednesday</div>
+                    <h3 class="service-title">Midweek Service</h3>
+                    <div class="service-time">6:00 PM</div>
+                    <p class="service-description">Prayer, Bible study, and fellowship</p>
+                </div>
+                <div class="service-card" id="specialService">
+                    <div class="service-day">Monthly</div>
+                    <h3 class="service-title">Special Programs</h3>
+                    <div class="service-time">Check Events</div>
+                    <p class="service-description">Monthly special services and programs</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sermons Section -->
+    <section class="sermons-section" id="sermons">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Recent Messages</span>
+                <h2 class="section-title">Latest Sermons</h2>
+            </div>
+            <div class="sermons-grid" id="sermonsGrid">
+                <!-- Sermons will be loaded dynamically -->
+                <div class="empty-state" id="sermonsEmpty">
+                    <p>No sermons available yet. Check back soon!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section class="events-section" id="events">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">What's Happening</span>
+                <h2 class="section-title">Upcoming Events</h2>
+            </div>
+            <div class="events-grid" id="eventsGrid">
+                <!-- Events will be loaded dynamically -->
+                <div class="empty-state" id="eventsEmpty">
+                    <p>No upcoming events. Stay tuned!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonies Section -->
+    <section class="testimonies-section" id="testimonies">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Stories of Faith</span>
+                <h2 class="section-title">Testimonies</h2>
+            </div>
+            
+            <!-- Submit Testimony -->
+            <div class="testimony-submit">
+                <h3>Share Your Testimony</h3>
+                <form id="testimonyForm" class="testimony-form">
+                    <div class="form-group">
+                        <input type="text" id="testimonyName" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="testimonyMessage" placeholder="Share your testimony..." rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Testimony</button>
+                </form>
+                <div id="testimonyFeedback" class="form-feedback"></div>
+            </div>
+
+            <!-- Approved Testimonies -->
+            <div class="testimonies-grid" id="testimoniesGrid">
+                <!-- Approved testimonies will be loaded dynamically -->
+                <div class="empty-state" id="testimoniesEmpty">
+                    <p>No testimonies yet. Be the first to share!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Offering Section -->
+    <section class="offering-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Give</span>
+                <h2 class="section-title">Offering & Donations</h2>
+            </div>
+            <div class="offering-card">
+                <p class="offering-intro">Your generous giving helps us continue spreading the Gospel and serving our community.</p>
+                <div class="offering-details" id="offeringDetails">
+                    <div class="offering-info">
+                        <strong>Bank:</strong> <span id="offeringBank">Sample Bank</span>
+                    </div>
+                    <div class="offering-info">
+                        <strong>Account Name:</strong> <span id="offeringAccountName">Salvation Ministries Ada George</span>
+                    </div>
+                    <div class="offering-info">
+                        <strong>Account Number:</strong> <span id="offeringAccountNumber">0123456789</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Get In Touch</span>
+                <h2 class="section-title">Contact Us</h2>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div>
+                            <h4>Email</h4>
+                            <p id="contactEmail">info@salvationministries-adageorge.org</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <div>
+                            <h4>Phone</h4>
+                            <p id="contactPhone">+234 123 456 7890</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <div>
+                            <h4>Address</h4>
+                            <p id="contactAddress">Ada George Road, Port Harcourt, Rivers State, Nigeria</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-wrapper">
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-group">
+                            <input type="text" id="contactName" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="contactEmailInput" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="contactMessage" placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                    <div id="contactFeedback" class="form-feedback"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="/mnt/user-data/uploads/1775217322747_image.png" alt="Salvation Ministries Logo">
+                    <p>Salvation Ministries Ada George</p>
+                </div>
+                <p class="footer-copyright">&copy; 2024 Salvation Ministries Ada George. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
