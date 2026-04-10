@@ -39,6 +39,25 @@ async function loadThemeSettings() {
             if (theme.accentColor) {
                 document.documentElement.style.setProperty('--accent-color', theme.accentColor);
             }
+
+            // Update logo
+            if (theme.logoUrl) {
+                const logos = document.querySelectorAll('.admin-logo img, .login-logo img');
+                logos.forEach(logo => {
+                    logo.src = theme.logoUrl;
+                });
+            }
+
+            // Update favicon
+            if (theme.faviconUrl) {
+                let link = document.querySelector("link[rel~='icon']");
+                if (!link) {
+                    link = document.createElement('link');
+                    link.rel = 'icon';
+                    document.getElementsByTagName('head')[0].appendChild(link);
+                }
+                link.href = theme.faviconUrl;
+            }
             
             // Apply dark mode if set
             if (theme.mode === 'dark') {

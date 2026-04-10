@@ -364,8 +364,9 @@ body.dark-mode .card {
 
 .event-img {
     width: 100%;
-    height: 240px;
-    object-fit: cover;
+    max-height: 500px;
+    object-fit: contain;
+    background: #000;
 }
 
 .event-content {
@@ -566,6 +567,85 @@ body.dark-mode .form-group textarea {
 .footer p {
     opacity: 0.6;
     font-size: 0.95rem;
+}
+
+/* Events Slideshow */
+.events-slider-container {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+}
+
+.events-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.events-track .event-card {
+    flex: 0 0 100%;
+    border-radius: 0;
+    border: none;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    box-shadow: var(--shadow-lg);
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    transition: var(--transition);
+}
+
+.slider-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.slider-btn.prev { left: 1rem; }
+.slider-btn.next { right: 1rem; }
+
+.slider-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.slider-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.slider-dot.active {
+    background: var(--primary-color);
+    width: 24px;
+    border-radius: 10px;
+}
+
+body.dark-mode .slider-btn {
+    background: var(--bg-card);
+}
+
+body.dark-mode .slider-dot {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 /* Responsive */

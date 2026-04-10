@@ -45,8 +45,8 @@ async function initializeDefaultData() {
         heroImage: 'https://images.unsplash.com/photo-1438032005730-c779502df39b?w=1600&q=80',
         heroText: 'Welcome to Salvation Ministries Ada George',
         heroSubtext: 'Where Faith Meets Purpose',
-        logoUrl: '/mnt/user-data/uploads/1775217322747_image.png',
-        faviconUrl: '/mnt/user-data/uploads/1775217322747_image.png'
+        logoUrl: '/uploads/1775217322747_image.png',
+        faviconUrl: '/uploads/1775217322747_image.png'
       });
 
       // Initialize default content

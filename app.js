@@ -83,6 +83,17 @@ async function loadThemeSettings() {
                     logo.src = theme.logoUrl;
                 });
             }
+
+            // Update favicon
+            if (theme.faviconUrl) {
+                let link = document.querySelector("link[rel~='icon']");
+                if (!link) {
+                    link = document.createElement('link');
+                    link.rel = 'icon';
+                    document.getElementsByTagName('head')[0].appendChild(link);
+                }
+                link.href = theme.faviconUrl;
+            }
             
             // Update hero section
             const heroSection = document.getElementById('home');
@@ -246,12 +257,18 @@ function extractYouTubeId(url) {
 // Events
 // ========================================
 
+let currentEventSlide = 0;
+let eventSlidesCount = 0;
+let eventSliderInterval = null;
+
 async function loadEvents() {
     try {
         const eventsGrid = document.getElementById('eventsGrid');
         const eventsEmpty = document.getElementById('eventsEmpty');
+        const eventsSlider = document.getElementById('eventsSlider');
+        const eventDots = document.getElementById('eventDots');
         
-        if (!eventsGrid || !eventsEmpty) return;
+        if (!eventsGrid || !eventsEmpty || !eventsSlider) return;
 
         const snapshot = await db.collection(Collections.EVENTS)
             .orderBy('date', 'asc')
@@ -259,20 +276,79 @@ async function loadEvents() {
         
         if (!snapshot.empty) {
             eventsEmpty.style.display = 'none';
+            eventsSlider.style.display = 'block';
             eventsGrid.innerHTML = '';
+            eventDots.innerHTML = '';
             
-            snapshot.forEach(doc => {
-                const event = doc.data();
+            const events = [];
+            snapshot.forEach(doc => events.push(doc.data()));
+            eventSlidesCount = events.length;
+            
+            events.forEach((event, index) => {
                 const card = createEventCard(event);
                 eventsGrid.appendChild(card);
+                
+                // Create dot
+                const dot = document.createElement('div');
+                dot.className = `slider-dot ${index === 0 ? 'active' : ''}`;
+                dot.onclick = () => goToEventSlide(index);
+                eventDots.appendChild(dot);
             });
+
+            setupEventSlider();
+            lucide.createIcons();
         } else {
             eventsEmpty.style.display = 'block';
-            eventsGrid.innerHTML = '';
+            eventsSlider.style.display = 'none';
+            eventDots.innerHTML = '';
         }
     } catch (error) {
         console.error('Error loading events:', error);
     }
+}
+
+function setupEventSlider() {
+    const prevBtn = document.getElementById('eventPrev');
+    const nextBtn = document.getElementById('eventNext');
+    
+    if (prevBtn) prevBtn.onclick = () => {
+        moveEventSlide(-1);
+        resetEventInterval();
+    };
+    if (nextBtn) nextBtn.onclick = () => {
+        moveEventSlide(1);
+        resetEventInterval();
+    };
+    
+    resetEventInterval();
+}
+
+function resetEventInterval() {
+    if (eventSliderInterval) clearInterval(eventSliderInterval);
+    eventSliderInterval = setInterval(() => moveEventSlide(1), 5000);
+}
+
+function moveEventSlide(direction) {
+    currentEventSlide = (currentEventSlide + direction + eventSlidesCount) % eventSlidesCount;
+    updateEventSlider();
+}
+
+function goToEventSlide(index) {
+    currentEventSlide = index;
+    updateEventSlider();
+}
+
+function updateEventSlider() {
+    const track = document.getElementById('eventsGrid');
+    const dots = document.querySelectorAll('#eventDots .slider-dot');
+    
+    if (track) {
+        track.style.transform = `translateX(-${currentEventSlide * 100}%)`;
+    }
+    
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentEventSlide);
+    });
 }
 
 function createEventCard(event) {
