@@ -294,6 +294,12 @@
                 padding: 1.5rem;
             }
         }
+        .empty-msg {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -335,6 +341,7 @@
                 <a class="admin-nav-item" data-panel="sermons"><span>Sermons</span></a>
                 <a class="admin-nav-item" data-panel="events"><span>Events</span></a>
                 <a class="admin-nav-item" data-panel="testimonies"><span>Testimonies</span></a>
+                <a class="admin-nav-item" data-panel="messages"><span>Messages</span></a>
                 <a class="admin-nav-item" data-panel="contact"><span>Contact Info</span></a>
             </nav>
         </aside>
@@ -573,6 +580,16 @@
                 </div>
             </div>
 
+            <!-- Messages Panel -->
+            <div id="messagesPanel" class="admin-panel">
+                <div class="admin-card">
+                    <h2>Contact Messages</h2>
+                    <div id="messagesList" class="admin-list">
+                        <!-- Messages will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
             <!-- Contact Panel -->
             <div id="contactPanel" class="admin-panel">
                 <div class="admin-card">
@@ -619,6 +636,9 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     
     <!-- App Scripts -->
     <script src="firebase-config.js"></script>

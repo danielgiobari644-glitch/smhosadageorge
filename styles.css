@@ -364,8 +364,8 @@ body.dark-mode .card {
 
 .event-img {
     width: 100%;
-    max-height: 500px;
-    object-fit: contain;
+    aspect-ratio: 819 / 1024;
+    object-fit: cover;
     background: #000;
 }
 

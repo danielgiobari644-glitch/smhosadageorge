@@ -2,7 +2,11 @@
 // Handles dynamic content loading, form submissions, and real-time updates
 
 // Wait for Firebase to initialize
-setTimeout(initializeSite, 1000);
+document.addEventListener('DOMContentLoaded', () => {
+    waitForFirebase().then(() => {
+        initializeSite();
+    });
+});
 
 function initializeSite() {
     // Load all dynamic content
@@ -21,6 +25,11 @@ function initializeSite() {
     // Setup form handlers
     setupTestimonyForm();
     setupContactForm();
+
+    // Initialize icons
+    if (window.lucide) {
+        lucide.createIcons();
+    }
     
     // Listen for real-time updates
     setupRealtimeListeners();
@@ -296,7 +305,9 @@ async function loadEvents() {
             });
 
             setupEventSlider();
-            lucide.createIcons();
+            if (window.lucide) {
+                lucide.createIcons();
+            }
         } else {
             eventsEmpty.style.display = 'block';
             eventsSlider.style.display = 'none';
@@ -525,7 +536,13 @@ function setupContactForm() {
         }
         
         try {
-            console.log('Contact form submitted:', { name, email, message });
+            await db.collection(Collections.MESSAGES).add({
+                name: name,
+                email: email,
+                message: message,
+                submittedAt: firebase.firestore.Timestamp.now()
+            });
+            
             form.reset();
             showFeedback(feedback, 'Thank you for your message! We will get back to you soon.', 'success');
         } catch (error) {

@@ -17,6 +17,11 @@ function initializeAdmin() {
     setupLogin();
     setupNavigation();
     setupForms();
+    
+    // Initialize icons
+    if (window.lucide) {
+        lucide.createIcons();
+    }
 }
 
 // ========================================
@@ -173,6 +178,7 @@ async function loadAllData() {
     loadSermonsList();
     loadEventsList();
     loadTestimoniesList();
+    loadMessagesList();
 }
 
 // ========================================
@@ -787,6 +793,54 @@ function setupForms() {
     });
 }
 
+async function loadMessagesList() {
+    const list = document.getElementById('messagesList');
+    if (!list) return;
+
+    try {
+        const snapshot = await db.collection(Collections.MESSAGES)
+            .orderBy('submittedAt', 'desc')
+            .get();
+
+        if (snapshot.empty) {
+            list.innerHTML = '<p class="empty-msg">No messages yet.</p>';
+            return;
+        }
+
+        list.innerHTML = snapshot.docs.map(doc => {
+            const msg = doc.data();
+            const date = msg.submittedAt ? msg.submittedAt.toDate().toLocaleString() : 'N/A';
+            return `
+                <div class="item-card">
+                    <div class="item-info">
+                        <h3>${msg.name}</h3>
+                        <p style="color: var(--secondary-color); margin: 0.5rem 0;">${msg.email}</p>
+                        <p style="opacity: 0.7;">${msg.message}</p>
+                        <small style="display: block; margin-top: 1rem; opacity: 0.5;">${date}</small>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-admin" style="background: #ef4444;" onclick="deleteMessage('${doc.id}')">Delete</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    } catch (error) {
+        console.error('Error loading messages:', error);
+        list.innerHTML = '<p class="error-msg">Error loading messages.</p>';
+    }
+}
+
+async function deleteMessage(id) {
+    if (!confirm('Are you sure you want to delete this message?')) return;
+    try {
+        await db.collection(Collections.MESSAGES).doc(id).delete();
+        loadMessagesList();
+    } catch (error) {
+        console.error('Error deleting message:', error);
+        alert('Error deleting message');
+    }
+}
+
 // ========================================
 // Utility Functions
 // ========================================
@@ -806,3 +860,4 @@ window.deleteEvent = deleteEvent;
 window.approveTestimony = approveTestimony;
 window.rejectTestimony = rejectTestimony;
 window.deleteTestimony = deleteTestimony;
+window.deleteMessage = deleteMessage;

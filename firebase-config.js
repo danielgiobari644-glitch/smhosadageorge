@@ -21,7 +21,8 @@ const Collections = {
   SERVICES: 'services',
   TESTIMONIES: 'testimonies',
   CONTENT: 'content',
-  ADMIN: 'admin'
+  ADMIN: 'admin',
+  MESSAGES: 'messages'
 };
 
 // Global flag to track initialization
