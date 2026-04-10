@@ -8,21 +8,16 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <div class="nav-logo">
+            <a href="#" class="nav-logo">
                 <img src="/mnt/user-data/uploads/1775217322747_image.png" alt="Salvation Ministries Logo">
                 <span>Salvation Ministries</span>
-            </div>
-            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+            </a>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="#home" class="nav-link">Home</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
@@ -38,8 +33,8 @@
     <section class="hero" id="home">
         <div class="hero-content">
             <h1 class="hero-title" id="heroTitle">Welcome to Salvation Ministries Ada George</h1>
-            <p class="hero-subtitle" id="heroSubtext">Where Faith Meets Purpose</p>
-            <div class="hero-cta">
+            <p class="hero-subtitle" id="heroSubtext">Where Faith Meets Purpose and Lives are Transformed</p>
+            <div class="hero-btns">
                 <a href="#about" class="btn btn-primary">Discover More</a>
                 <a href="#sermons" class="btn btn-secondary">Watch Sermons</a>
             </div>
@@ -47,24 +42,25 @@
     </section>
 
     <!-- About Section -->
-    <section class="about-section" id="about">
+    <section id="about">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Our Faith Community</h2>
+                <p class="section-subtitle">A place where everyone is welcome to experience the love of God.</p>
             </div>
-            <div class="about-grid">
-                <div class="about-card">
-                    <div style="font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--primary-color);">🎯</div>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-icon">🎯</div>
                     <h3>Our Mission</h3>
                     <p id="missionText">To spread the Gospel of Jesus Christ and transform lives through biblical teaching and community service.</p>
                 </div>
-                <div class="about-card">
-                    <div style="font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--primary-color);">👁️</div>
+                <div class="card">
+                    <div class="card-icon">👁️</div>
                     <h3>Our Vision</h3>
                     <p id="visionText">Building a community of believers who live out their faith with passion and purpose.</p>
                 </div>
-                <div class="about-card">
-                    <div style="font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--primary-color);">🤝</div>
+                <div class="card">
+                    <div class="card-icon">🤝</div>
                     <h3>Welcome Message</h3>
                     <p id="welcomeText">We are a vibrant community of believers committed to worshipping God, studying His Word, and serving our community with love and compassion.</p>
                 </div>
@@ -73,28 +69,29 @@
     </section>
 
     <!-- Service Times Section -->
-    <section class="services-section">
+    <section style="background: var(--bg-white);">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Service Times</h2>
+                <p class="section-subtitle">Join us in person or online for our weekly services.</p>
             </div>
-            <div class="services-grid">
-                <div class="service-card" id="sundayService">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">⛪</div>
-                    <h3 class="service-title">Sunday Worship Service</h3>
-                    <div class="service-time">8:00 AM - 11:00 AM</div>
+            <div class="grid">
+                <div class="card service-card" id="sundayService">
+                    <div class="card-icon">⛪</div>
+                    <h3 class="service-title">Sunday Worship</h3>
+                    <div class="service-time"><span>🕒</span> 8:00 AM - 11:00 AM</div>
                     <p class="service-description">Join us for praise, worship, and powerful biblical teaching</p>
                 </div>
-                <div class="service-card" id="midweekService">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">📖</div>
+                <div class="card service-card" id="midweekService">
+                    <div class="card-icon">📖</div>
                     <h3 class="service-title">Midweek Service</h3>
-                    <div class="service-time">6:00 PM</div>
+                    <div class="service-time"><span>🕒</span> 6:00 PM</div>
                     <p class="service-description">Prayer, Bible study, and fellowship</p>
                 </div>
-                <div class="service-card" id="specialService">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">🗓️</div>
+                <div class="card service-card" id="specialService">
+                    <div class="card-icon">🗓️</div>
                     <h3 class="service-title">Special Programs</h3>
-                    <div class="service-time">Check Events</div>
+                    <div class="service-time"><span>🕒</span> Check Events</div>
                     <p class="service-description">Monthly special services and programs</p>
                 </div>
             </div>
@@ -102,109 +99,137 @@
     </section>
 
     <!-- Sermons Section -->
-    <section class="sermons-section" id="sermons">
+    <section id="sermons">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Latest Sermons</h2>
+                <p class="section-subtitle">Catch up on our recent messages and teachings.</p>
             </div>
             <div class="empty-state" id="sermonsEmpty">
                 <p>No sermons available yet. Check back soon!</p>
             </div>
-            <div class="sermons-grid" id="sermonsGrid"></div>
+            <div class="grid" id="sermonsGrid"></div>
         </div>
     </section>
 
     <!-- Events Section -->
-    <section class="events-section" id="events">
+    <section id="events" style="background: var(--bg-white);">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Upcoming Events</h2>
+                <p class="section-subtitle">Stay updated with our community activities and special programs.</p>
             </div>
             <div class="empty-state" id="eventsEmpty">
                 <p>No upcoming events. Stay tuned!</p>
             </div>
-            <div class="events-grid" id="eventsGrid"></div>
+            <div class="grid" id="eventsGrid"></div>
         </div>
     </section>
 
     <!-- Testimonies Section -->
-    <section class="testimonies-section" id="testimonies">
+    <section id="testimonies">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Testimonies</h2>
+                <p class="section-subtitle">Real stories of God's faithfulness in the lives of our members.</p>
             </div>
             
-            <div class="testimony-submit">
-                <h3>Share Your Testimony</h3>
-                <form id="testimonyForm" class="testimony-form">
-                    <div class="form-group">
-                        <input type="text" id="testimonyName" placeholder="Your Name" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="testimonyMessage" placeholder="Share your testimony..." rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="background: var(--primary-color); color: white;">Submit Testimony</button>
-                </form>
-                <div id="testimonyFeedback" class="form-feedback"></div>
+            <div class="grid" style="margin-bottom: 5rem;">
+                <div class="form-card">
+                    <h3>Share Your Testimony</h3>
+                    <p style="margin-bottom: 2rem; color: var(--text-muted);">Has God done something amazing in your life? We'd love to hear about it!</p>
+                    <form id="testimonyForm">
+                        <div class="form-group">
+                            <label for="testimonyName">Full Name</label>
+                            <input type="text" id="testimonyName" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="testimonyMessage">Your Story</label>
+                            <textarea id="testimonyMessage" placeholder="Tell us what God has done..." rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Testimony</button>
+                    </form>
+                    <div id="testimonyFeedback" class="form-feedback"></div>
+                </div>
             </div>
 
             <div class="empty-state" id="testimoniesEmpty">
                 <p>No testimonies yet. Be the first to share!</p>
             </div>
-            <div class="testimonies-grid" id="testimoniesGrid"></div>
+            <div class="grid" id="testimoniesGrid"></div>
         </div>
     </section>
 
     <!-- Offering Section -->
-    <section class="offering-section">
+    <section>
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Offering & Donations</h2>
-            </div>
-            <div class="offering-card">
-                <p>Your generous giving helps us continue spreading the Gospel and serving our community.</p>
-                <div id="offeringDetails" style="margin-top: 2rem; font-weight: 600;">
-                    <p>Bank: <span id="offeringBank">Sample Bank</span></p>
-                    <p>Account Name: <span id="offeringAccountName">Salvation Ministries Ada George</span></p>
-                    <p>Account Number: <span id="offeringAccountNumber">0123456789</span></p>
+            <div class="offering">
+                <h2>Offering & Donations</h2>
+                <p style="max-width: 600px; margin: 0 auto 3rem; opacity: 0.9;">Your generous giving helps us continue spreading the Gospel and serving our community both locally and globally.</p>
+                <div class="offering-details">
+                    <div class="offering-item">
+                        <h4>Bank</h4>
+                        <p id="offeringBank">Sample Bank</p>
+                    </div>
+                    <div class="offering-item">
+                        <h4>Account Name</h4>
+                        <p id="offeringAccountName">Salvation Ministries Ada George</p>
+                    </div>
+                    <div class="offering-item">
+                        <h4>Account Number</h4>
+                        <p id="offeringAccountNumber">0123456789</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section class="contact-section" id="contact">
+    <section id="contact">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Contact Us</h2>
-            </div>
             <div class="contact-grid">
                 <div class="contact-info">
+                    <h3>Get in Touch</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 3rem;">Have questions or need prayer? Reach out to us and we'll be happy to connect with you.</p>
+                    
                     <div class="contact-item">
-                        <h4>Email</h4>
-                        <p id="contactEmail">info@salvationministries-adageorge.org</p>
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-text">
+                            <h4>Email Us</h4>
+                            <p id="contactEmail">info@salvationministries-adageorge.org</p>
+                        </div>
                     </div>
                     <div class="contact-item">
-                        <h4>Phone</h4>
-                        <p id="contactPhone">+234 123 456 7890</p>
+                        <div class="contact-icon">📞</div>
+                        <div class="contact-text">
+                            <h4>Call Us</h4>
+                            <p id="contactPhone">+234 123 456 7890</p>
+                        </div>
                     </div>
                     <div class="contact-item">
-                        <h4>Address</h4>
-                        <p id="contactAddress">Ada George Road, Port Harcourt, Rivers State, Nigeria</p>
+                        <div class="contact-icon">📍</div>
+                        <div class="contact-text">
+                            <h4>Visit Us</h4>
+                            <p id="contactAddress">Ada George Road, Port Harcourt, Rivers State, Nigeria</p>
+                        </div>
                     </div>
                 </div>
-                <div class="contact-form-wrapper">
-                    <form id="contactForm" class="contact-form">
+                <div class="form-card">
+                    <h3>Send a Message</h3>
+                    <form id="contactForm">
                         <div class="form-group">
+                            <label for="contactName">Name</label>
                             <input type="text" id="contactName" placeholder="Your Name" required>
                         </div>
                         <div class="form-group">
+                            <label for="contactEmailInput">Email Address</label>
                             <input type="email" id="contactEmailInput" placeholder="Your Email" required>
                         </div>
                         <div class="form-group">
-                            <textarea id="contactMessage" placeholder="Your Message" rows="5" required></textarea>
+                            <label for="contactMessage">Message</label>
+                            <textarea id="contactMessage" placeholder="How can we help you?" rows="5" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary" style="background: var(--primary-color); color: white;">Send Message</button>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
                     </form>
                     <div id="contactFeedback" class="form-feedback"></div>
                 </div>
@@ -215,7 +240,11 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 Salvation Ministries Ada George. All rights reserved.</p>
+            <div class="footer-logo">
+                <img src="/mnt/user-data/uploads/1775217322747_image.png" alt="Salvation Ministries Logo" style="width: 40px; border-radius: 8px;">
+                <span>Salvation Ministries</span>
+            </div>
+            <p>&copy; 2026 Salvation Ministries Ada George. All rights reserved.</p>
         </div>
     </footer>
 

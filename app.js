@@ -84,9 +84,17 @@ async function loadThemeSettings() {
                 });
             }
             
-            // Update hero text
+            // Update hero section
+            const heroSection = document.getElementById('home');
             const heroTitle = document.getElementById('heroTitle');
             const heroSubtext = document.getElementById('heroSubtext');
+            
+            if (heroSection && theme.heroImage) {
+                heroSection.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('${theme.heroImage}')`;
+                heroSection.style.backgroundSize = 'cover';
+                heroSection.style.backgroundPosition = 'center';
+            }
+            
             if (heroTitle && theme.heroText) heroTitle.textContent = theme.heroText;
             if (heroSubtext && theme.heroSubtext) heroSubtext.textContent = theme.heroSubtext;
             
@@ -206,7 +214,7 @@ async function loadSermons() {
 
 function createSermonCard(sermon) {
     const card = document.createElement('div');
-    card.className = 'sermon-card';
+    card.className = 'card sermon-card';
     
     const videoId = extractYouTubeId(sermon.videoUrl);
     
@@ -219,8 +227,8 @@ function createSermonCard(sermon) {
             </iframe>
         </div>
         <div class="sermon-info">
-            <h3 class="sermon-title" style="color: var(--primary-color); font-weight: 700;">${sermon.title}</h3>
-            <div class="sermon-date" style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.5rem;">${formatDate(sermon.date)}</div>
+            <h3 class="sermon-title">${sermon.title}</h3>
+            <div class="sermon-date">${formatDate(sermon.date)}</div>
             ${sermon.description ? `<p class="sermon-description">${sermon.description}</p>` : ''}
         </div>
     `;
@@ -269,13 +277,13 @@ async function loadEvents() {
 
 function createEventCard(event) {
     const card = document.createElement('div');
-    card.className = 'event-card';
+    card.className = 'card event-card';
     
     card.innerHTML = `
-        <img src="${event.imageUrl}" alt="${event.title}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 4px;">
-        <div class="event-content" style="padding-top: 1rem;">
-            <div class="event-date" style="font-size: 0.85rem; color: var(--secondary-color); font-weight: 700;">${formatDate(event.date)}</div>
-            <h3 class="event-title" style="color: var(--primary-color); font-weight: 700;">${event.title}</h3>
+        <img src="${event.imageUrl}" alt="${event.title}" class="event-img">
+        <div class="event-content">
+            <div class="event-date">${formatDate(event.date)}</div>
+            <h3 class="event-title">${event.title}</h3>
             <p class="event-description">${event.description}</p>
         </div>
     `;
@@ -326,11 +334,11 @@ async function loadTestimonies() {
 
 function createTestimonyCard(testimony) {
     const card = document.createElement('div');
-    card.className = 'testimony-card';
+    card.className = 'card testimony-card';
     
     card.innerHTML = `
-        <p class="testimony-message" style="font-style: italic; margin-bottom: 1rem;">"${testimony.message}"</p>
-        <div class="testimony-author" style="font-weight: 700; color: var(--primary-color); text-align: right;">- ${testimony.name}</div>
+        <p class="testimony-message">"${testimony.message}"</p>
+        <div class="testimony-author">- ${testimony.name}</div>
     `;
     
     return card;

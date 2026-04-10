@@ -8,9 +8,13 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
         /* Admin-specific styles */
+        :root {
+            --sidebar-width: 280px;
+        }
+
         .admin-container {
             display: flex;
             min-height: 100vh;
@@ -18,82 +22,93 @@
         }
         
         .admin-sidebar {
-            width: 280px;
+            width: var(--sidebar-width);
             background: var(--bg-white);
-            border-right: 1px solid #e2e8f0;
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
             position: fixed;
             height: 100vh;
             overflow-y: auto;
             z-index: 100;
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.02);
         }
         
         .admin-logo {
-            padding: 2rem;
+            padding: 2.5rem 2rem;
             text-align: center;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
         
         .admin-logo img {
-            width: 60px;
-            height: 60px;
+            width: 56px;
+            height: 56px;
             margin: 0 auto 1rem;
+            border-radius: 12px;
+            object-fit: cover;
         }
         
         .admin-logo h2 {
+            font-family: var(--font-display);
             font-size: 1.25rem;
             color: var(--primary-color);
-            font-weight: 700;
+            font-weight: 800;
+            letter-spacing: -0.02em;
         }
         
         .admin-nav {
-            padding: 1.5rem 0;
+            padding: 2rem 1rem;
         }
         
         .admin-nav-item {
-            padding: 1rem 2rem;
-            display: block;
-            color: #64748b;
+            padding: 0.875rem 1.5rem;
+            display: flex;
+            align-items: center;
+            color: var(--text-muted);
             transition: var(--transition);
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
         }
         
         .admin-nav-item:hover {
-            background: #f8fafc;
+            background: rgba(37, 99, 235, 0.05);
             color: var(--primary-color);
         }
         
         .admin-nav-item.active {
-            background: #f1f5f9;
-            color: var(--primary-color);
-            font-weight: 700;
-            border-right: 4px solid var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.3);
         }
         
         .admin-main {
-            margin-left: 280px;
+            margin-left: var(--sidebar-width);
             flex: 1;
-            padding: 2rem;
-            width: calc(100% - 280px);
+            padding: 3rem;
+            width: calc(100% - var(--sidebar-width));
         }
         
         .admin-header {
-            background: var(--bg-white);
-            padding: 1.5rem 2rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid #e2e8f0;
+            margin-bottom: 3rem;
         }
         
         .admin-header h1 {
-            font-size: 1.75rem;
-            color: var(--primary-color);
+            font-family: var(--font-display);
+            font-size: 2.25rem;
+            color: var(--text-dark);
             font-weight: 800;
+            letter-spacing: -0.03em;
         }
         
         .admin-panel {
             display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .admin-panel.active {
@@ -102,79 +117,119 @@
         
         .admin-card {
             background: var(--bg-white);
-            padding: 2rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
+            padding: 2.5rem;
+            border-radius: 20px;
+            margin-bottom: 2.5rem;
             box-shadow: var(--shadow-sm);
-            border: 1px solid #e2e8f0;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
         
         .admin-card h2 {
+            font-family: var(--font-display);
             font-size: 1.5rem;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
             font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .admin-card h2::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--primary-color);
+            border-radius: 2px;
         }
         
         .form-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #475569;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 0.9rem;
         }
         
         .form-group input,
         .form-group textarea,
         .form-group select {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
             font-family: var(--font-body);
             font-size: 1rem;
+            transition: var(--transition);
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea,
+        body.dark-mode .form-group select {
+            border-color: #334155;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: var(--bg-white);
         }
         
         .form-group input[type="color"] {
-            height: 45px;
-            padding: 2px;
+            height: 50px;
+            padding: 4px;
+            cursor: pointer;
         }
         
         .btn-admin {
-            padding: 0.75rem 1.5rem;
+            padding: 1rem 2rem;
             background: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 6px;
-            font-weight: 600;
+            border-radius: 12px;
+            font-weight: 700;
             cursor: pointer;
             transition: var(--transition);
+            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.3);
         }
         
         .btn-admin:hover {
-            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -5px rgba(37, 99, 235, 0.4);
         }
         
         .item-list {
             display: grid;
-            gap: 1rem;
-            margin-top: 2rem;
+            gap: 1.25rem;
+            margin-top: 2.5rem;
         }
         
         .item-card {
-            background: #f8fafc;
-            padding: 1.25rem;
-            border-radius: 6px;
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #e2e8f0;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .item-card:hover {
+            border-color: var(--primary-color);
+            background: var(--bg-white);
+            box-shadow: var(--shadow-md);
         }
         
         .login-container {
@@ -182,42 +237,61 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            background: var(--primary-color);
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            padding: 2rem;
         }
         
         .login-card {
             background: white;
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: var(--shadow-lg);
-            max-width: 400px;
+            padding: 3.5rem 3rem;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            max-width: 440px;
             width: 100%;
         }
         
         .login-logo {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
         }
         
         .login-logo img {
-            width: 70px;
-            height: 70px;
-            margin: 0 auto 1rem;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            border-radius: 16px;
+            object-fit: cover;
         }
         
         .login-logo h2 {
-            font-size: 1.5rem;
+            font-family: var(--font-display);
+            font-size: 1.75rem;
             color: var(--primary-color);
             font-weight: 800;
+            letter-spacing: -0.03em;
         }
         
-        @media (max-width: 968px) {
+        @media (max-width: 1024px) {
+            .admin-sidebar {
+                width: 80px;
+            }
+            .admin-sidebar h2, .admin-nav-item span {
+                display: none;
+            }
+            .admin-main {
+                margin-left: 80px;
+                width: calc(100% - 80px);
+            }
+        }
+
+        @media (max-width: 768px) {
             .admin-sidebar {
                 display: none;
             }
             .admin-main {
                 margin-left: 0;
                 width: 100%;
+                padding: 1.5rem;
             }
         }
     </style>
@@ -228,18 +302,18 @@
         <div class="login-card">
             <div class="login-logo">
                 <img src="/mnt/user-data/uploads/1775217322747_image.png" alt="Logo">
-                <h2>Admin Login</h2>
+                <h2>Admin Portal</h2>
             </div>
             <form id="loginForm">
                 <div class="form-group">
                     <label>Username</label>
-                    <input type="text" id="loginUsername" required>
+                    <input type="text" id="loginUsername" placeholder="Enter username" required>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="loginPassword" required>
+                    <input type="password" id="loginPassword" placeholder="Enter password" required>
                 </div>
-                <button type="submit" class="btn-admin" style="width: 100%; margin-top: 1rem;">Login</button>
+                <button type="submit" class="btn-admin" style="width: 100%; margin-top: 1.5rem;">Sign In</button>
                 <div id="loginFeedback" class="form-feedback"></div>
             </form>
         </div>
@@ -251,17 +325,17 @@
         <aside class="admin-sidebar">
             <div class="admin-logo">
                 <img src="/mnt/user-data/uploads/1775217322747_image.png" alt="Logo">
-                <h2>Admin Panel</h2>
+                <h2>Admin</h2>
             </div>
             <nav class="admin-nav">
-                <a class="admin-nav-item active" data-panel="theme">Theme Settings</a>
-                <a class="admin-nav-item" data-panel="hero">Hero Section</a>
-                <a class="admin-nav-item" data-panel="content">Content</a>
-                <a class="admin-nav-item" data-panel="services">Service Times</a>
-                <a class="admin-nav-item" data-panel="sermons">Sermons</a>
-                <a class="admin-nav-item" data-panel="events">Events</a>
-                <a class="admin-nav-item" data-panel="testimonies">Testimonies</a>
-                <a class="admin-nav-item" data-panel="contact">Contact Info</a>
+                <a class="admin-nav-item active" data-panel="theme"><span>Theme Settings</span></a>
+                <a class="admin-nav-item" data-panel="hero"><span>Hero Section</span></a>
+                <a class="admin-nav-item" data-panel="content"><span>About Content</span></a>
+                <a class="admin-nav-item" data-panel="services"><span>Service Times</span></a>
+                <a class="admin-nav-item" data-panel="sermons"><span>Sermons</span></a>
+                <a class="admin-nav-item" data-panel="events"><span>Events</span></a>
+                <a class="admin-nav-item" data-panel="testimonies"><span>Testimonies</span></a>
+                <a class="admin-nav-item" data-panel="contact"><span>Contact Info</span></a>
             </nav>
         </aside>
 
@@ -274,29 +348,29 @@
             <!-- Theme Settings Panel -->
             <div id="themePanel" class="admin-panel active">
                 <div class="admin-card">
-                    <h2>Theme Settings</h2>
+                    <h2>Visual Identity</h2>
                     <form id="themeForm">
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Theme Mode</label>
+                                <label>Interface Mode</label>
                                 <select id="themeMode">
-                                    <option value="light">Light</option>
-                                    <option value="dark">Dark</option>
+                                    <option value="light">Light Mode</option>
+                                    <option value="dark">Dark Mode</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Primary Color</label>
-                                <input type="color" id="primaryColor" value="#2c5f7a">
+                                <label>Primary Brand Color</label>
+                                <input type="color" id="primaryColor" value="#2563eb">
                             </div>
                             <div class="form-group">
                                 <label>Secondary Color</label>
-                                <input type="color" id="secondaryColor" value="#d946ef">
+                                <input type="color" id="secondaryColor" value="#7c3aed">
                             </div>
                             <div class="form-group">
                                 <label>Accent Color</label>
-                                <input type="color" id="accentColor" value="#6366f1">
+                                <input type="color" id="accentColor" value="#f59e0b">
                             </div>
                         </div>
                         <div class="form-row">
@@ -309,7 +383,7 @@
                                 <input type="url" id="faviconUrl" placeholder="https://example.com/favicon.png">
                             </div>
                         </div>
-                        <button type="submit" class="btn-admin">Save Theme Settings</button>
+                        <button type="submit" class="btn-admin">Update Theme</button>
                     </form>
                 </div>
             </div>
@@ -317,18 +391,18 @@
             <!-- Hero Section Panel -->
             <div id="heroPanel" class="admin-panel">
                 <div class="admin-card">
-                    <h2>Hero Section</h2>
+                    <h2>Hero Experience</h2>
                     <form id="heroForm">
                         <div class="form-group">
                             <label>Background Image URL</label>
                             <input type="url" id="heroImageUrl" placeholder="https://example.com/image.jpg">
                         </div>
                         <div class="form-group">
-                            <label>Hero Title</label>
+                            <label>Main Heading</label>
                             <input type="text" id="heroTitleInput" placeholder="Welcome to Salvation Ministries">
                         </div>
                         <div class="form-group">
-                            <label>Hero Subtitle</label>
+                            <label>Subheading Text</label>
                             <input type="text" id="heroSubtextInput" placeholder="Where Faith Meets Purpose">
                         </div>
                         <button type="submit" class="btn-admin">Save Hero Settings</button>
@@ -361,7 +435,7 @@
             <!-- Services Panel -->
             <div id="servicesPanel" class="admin-panel">
                 <div class="admin-card">
-                    <h2>Service Times</h2>
+                    <h2>Service Schedule</h2>
                     <form id="servicesForm">
                         <h3 style="margin: 1rem 0; color: var(--primary-color);">Sunday Service</h3>
                         <div class="form-row">
@@ -379,7 +453,7 @@
                             <textarea id="sundayDescription" rows="2"></textarea>
                         </div>
 
-                        <h3 style="margin: 1rem 0; color: var(--primary-color);">Midweek Service</h3>
+                        <h3 style="margin: 2rem 0 1rem; color: var(--primary-color);">Midweek Service</h3>
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Title</label>
@@ -395,13 +469,13 @@
                             <textarea id="midweekDescription" rows="2"></textarea>
                         </div>
 
-                        <h3 style="margin: 1rem 0; color: var(--primary-color);">Special Programs</h3>
+                        <h3 style="margin: 2rem 0 1rem; color: var(--primary-color);">Special Programs</h3>
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Title</label>
                                 <input type="text" id="specialTitle">
                             </div>
-                            <div class="form-group)
+                            <div class="form-group">
                                 <label>Time</label>
                                 <input type="text" id="specialTime">
                             </div>
@@ -411,7 +485,7 @@
                             <textarea id="specialDescription" rows="2"></textarea>
                         </div>
 
-                        <button type="submit" class="btn-admin">Save Service Times</button>
+                        <button type="submit" class="btn-admin">Save Schedule</button>
                     </form>
                 </div>
             </div>
@@ -419,7 +493,7 @@
             <!-- Sermons Panel -->
             <div id="sermonsPanel" class="admin-panel">
                 <div class="admin-card">
-                    <h2>Manage Sermons</h2>
+                    <h2>Sermon Library</h2>
                     <form id="sermonForm">
                         <div class="form-group">
                             <label>Sermon Title</label>
@@ -448,7 +522,7 @@
             <!-- Events Panel -->
             <div id="eventsPanel" class="admin-panel">
                 <div class="admin-card">
-                    <h2>Manage Events</h2>
+                    <h2>Event Management</h2>
                     <form id="eventForm">
                         <div class="form-group">
                             <label>Event Title</label>
@@ -477,14 +551,14 @@
             <!-- Testimonies Panel -->
             <div id="testimoniesPanel" class="admin-panel">
                 <div class="admin-card">
-                    <h2>Manage Testimonies</h2>
+                    <h2>Testimony Moderation</h2>
                     <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Pending Approval</h3>
                     <div id="pendingTestimoniesList" class="item-list"></div>
 
-                    <h3 style="color: var(--primary-color); margin: 2rem 0 1rem;">Approved Testimonies</h3>
+                    <h3 style="color: var(--primary-color); margin: 3rem 0 1rem;">Approved Testimonies</h3>
                     <div id="approvedTestimoniesList" class="item-list"></div>
 
-                    <h3 style="color: var(--primary-color); margin: 2rem 0 1rem;">Add Testimony Manually</h3>
+                    <h3 style="color: var(--primary-color); margin: 3rem 0 1rem;">Add Testimony Manually</h3>
                     <form id="testimonyManualForm">
                         <div class="form-group">
                             <label>Name</label>
@@ -502,24 +576,24 @@
             <!-- Contact Panel -->
             <div id="contactPanel" class="admin-panel">
                 <div class="admin-card">
-                    <h2>Contact Information</h2>
+                    <h2>Contact & Financials</h2>
                     <form id="contactForm">
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Email</label>
+                                <label>Email Address</label>
                                 <input type="email" id="contactEmailAdmin">
                             </div>
                             <div class="form-group">
-                                <label>Phone</label>
+                                <label>Phone Number</label>
                                 <input type="tel" id="contactPhoneAdmin">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Address</label>
+                            <label>Physical Address</label>
                             <textarea id="contactAddressAdmin" rows="2"></textarea>
                         </div>
 
-                        <h3 style="margin: 1rem 0; color: var(--primary-color);">Offering Account Details</h3>
+                        <h3 style="margin: 2rem 0 1rem; color: var(--primary-color);">Offering Account Details</h3>
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Bank Name</label>
@@ -535,7 +609,7 @@
                             <input type="text" id="offeringAccountNameAdmin">
                         </div>
 
-                        <button type="submit" class="btn-admin">Save Contact Information</button>
+                        <button type="submit" class="btn-admin">Save Information</button>
                     </form>
                 </div>
             </div>
