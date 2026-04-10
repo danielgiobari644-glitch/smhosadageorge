@@ -12,9 +12,11 @@ function initializeSite() {
     // Load all dynamic content
     loadThemeSettings();
     loadAboutContent();
+    loadQuotes();
     loadServiceTimes();
     loadSermons();
     loadEvents();
+    loadMoments();
     loadTestimonies();
     loadContactInfo();
     loadOfferingDetails();
@@ -25,6 +27,9 @@ function initializeSite() {
     // Setup form handlers
     setupTestimonyForm();
     setupContactForm();
+
+    // Setup moments tabs
+    setupMomentsTabs();
 
     // Initialize icons
     if (window.lucide) {
@@ -144,12 +149,50 @@ async function loadAboutContent() {
             const visionText = document.getElementById('visionText');
             const welcomeText = document.getElementById('welcomeText');
             
+            const missionImg = document.getElementById('missionImage');
+            const visionImg = document.getElementById('visionImage');
+            const welcomeImg = document.getElementById('welcomeImage');
+            
             if (missionText && content.mission) missionText.textContent = content.mission;
             if (visionText && content.vision) visionText.textContent = content.vision;
             if (welcomeText && content.welcomeMessage) welcomeText.textContent = content.welcomeMessage;
+            
+            if (missionImg && content.missionImage) missionImg.src = content.missionImage;
+            if (visionImg && content.visionImage) visionImg.src = content.visionImage;
+            if (welcomeImg && content.welcomeImage) welcomeImg.src = content.welcomeImage;
         }
     } catch (error) {
         console.error('Error loading about content:', error);
+    }
+}
+
+// ========================================
+// Daily Quotes
+// ========================================
+
+async function loadQuotes() {
+    try {
+        const container = document.getElementById('quoteContainer');
+        if (!container) return;
+
+        // Fetch all quotes ordered by date to avoid composite index requirement
+        const snapshot = await db.collection(Collections.QUOTES)
+            .orderBy('createdAt', 'desc')
+            .get();
+
+        const activeQuote = snapshot.docs.find(doc => doc.data().active === true);
+
+        if (activeQuote) {
+            const quote = activeQuote.data();
+            container.innerHTML = `
+                <blockquote>"${quote.text}"</blockquote>
+                ${quote.author ? `<cite>— ${quote.author}</cite>` : ''}
+            `;
+        } else {
+            container.innerHTML = '<p>The word of God is a lamp unto my feet and a light unto my path.</p><cite>— Psalm 119:105</cite>';
+        }
+    } catch (error) {
+        console.error('Error loading quotes:', error);
     }
 }
 
@@ -273,35 +316,24 @@ let eventSliderInterval = null;
 async function loadEvents() {
     try {
         const eventsGrid = document.getElementById('eventsGrid');
-        const eventsEmpty = document.getElementById('eventsEmpty');
-        const eventsSlider = document.getElementById('eventsSlider');
-        const eventDots = document.getElementById('eventDots');
+        const eventsSlider = document.getElementById('eventsPosterSlider');
         
-        if (!eventsGrid || !eventsEmpty || !eventsSlider) return;
+        if (!eventsGrid || !eventsSlider) return;
 
         const snapshot = await db.collection(Collections.EVENTS)
             .orderBy('date', 'asc')
             .get();
         
         if (!snapshot.empty) {
-            eventsEmpty.style.display = 'none';
-            eventsSlider.style.display = 'block';
             eventsGrid.innerHTML = '';
-            eventDots.innerHTML = '';
             
             const events = [];
             snapshot.forEach(doc => events.push(doc.data()));
             eventSlidesCount = events.length;
             
-            events.forEach((event, index) => {
+            events.forEach((event) => {
                 const card = createEventCard(event);
                 eventsGrid.appendChild(card);
-                
-                // Create dot
-                const dot = document.createElement('div');
-                dot.className = `slider-dot ${index === 0 ? 'active' : ''}`;
-                dot.onclick = () => goToEventSlide(index);
-                eventDots.appendChild(dot);
             });
 
             setupEventSlider();
@@ -309,9 +341,7 @@ async function loadEvents() {
                 lucide.createIcons();
             }
         } else {
-            eventsEmpty.style.display = 'block';
-            eventsSlider.style.display = 'none';
-            eventDots.innerHTML = '';
+            eventsGrid.innerHTML = '<div class="event-poster-item"><img src="https://images.unsplash.com/photo-1438032005730-c779502df39b?w=800&q=80" alt="No Events"></div>';
         }
     } catch (error) {
         console.error('Error loading events:', error);
@@ -351,31 +381,161 @@ function goToEventSlide(index) {
 
 function updateEventSlider() {
     const track = document.getElementById('eventsGrid');
-    const dots = document.querySelectorAll('#eventDots .slider-dot');
     
     if (track) {
         track.style.transform = `translateX(-${currentEventSlide * 100}%)`;
     }
-    
-    dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentEventSlide);
-    });
 }
 
 function createEventCard(event) {
     const card = document.createElement('div');
-    card.className = 'card event-card';
+    card.className = 'event-poster-item';
     
     card.innerHTML = `
-        <img src="${event.imageUrl}" alt="${event.title}" class="event-img">
-        <div class="event-content">
-            <div class="event-date">${formatDate(event.date)}</div>
-            <h3 class="event-title">${event.title}</h3>
-            <p class="event-description">${event.description}</p>
-        </div>
+        <img src="${event.imageUrl}" alt="${event.title}" referrerPolicy="no-referrer">
     `;
     
     return card;
+}
+
+// ========================================
+// Moments
+// ========================================
+
+let currentMomentSlide = 0;
+let momentSlidesCount = 0;
+let momentSliderInterval = null;
+
+async function loadMoments() {
+    try {
+        const photosTrack = document.getElementById('photosTrack');
+        const videosTrack = document.getElementById('videosTrack');
+        const momentDots = document.getElementById('momentDots');
+        
+        if (!photosTrack || !videosTrack) return;
+
+        const snapshot = await db.collection(Collections.MOMENTS)
+            .orderBy('createdAt', 'desc')
+            .get();
+        
+        const photos = [];
+        const videos = [];
+        
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.type === 'photo') photos.push(data);
+            else if (data.type === 'video') videos.push(data);
+        });
+
+        // Load Photos
+        if (photos.length > 0) {
+            photosTrack.innerHTML = '';
+            momentDots.innerHTML = '';
+            momentSlidesCount = photos.length;
+            
+            photos.forEach((photo, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'moment-slide';
+                slide.innerHTML = `
+                    <img src="${photo.url}" alt="${photo.title || ''}" referrerPolicy="no-referrer">
+                    ${(photo.title || photo.description) ? `
+                        <div class="moment-info">
+                            ${photo.title ? `<h3>${photo.title}</h3>` : ''}
+                            ${photo.description ? `<p>${photo.description}</p>` : ''}
+                        </div>
+                    ` : ''}
+                `;
+                photosTrack.appendChild(slide);
+                
+                const dot = document.createElement('button');
+                dot.className = `slider-dot ${index === 0 ? 'active' : ''}`;
+                dot.onclick = () => goToMomentSlide(index);
+                momentDots.appendChild(dot);
+            });
+            setupMomentSlider();
+        }
+
+        // Load Videos
+        if (videos.length > 0) {
+            videosTrack.innerHTML = '';
+            videos.forEach(video => {
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                card.innerHTML = `
+                    <a href="${video.url}" target="_blank" class="video-thumb">
+                        <i data-lucide="play-circle"></i>
+                    </a>
+                    <div class="video-content">
+                        <h3>${video.title || 'Church Moment'}</h3>
+                    </div>
+                `;
+                videosTrack.appendChild(card);
+            });
+            if (window.lucide) lucide.createIcons();
+        }
+    } catch (error) {
+        console.error('Error loading moments:', error);
+    }
+}
+
+function setupMomentsTabs() {
+    const tabs = document.querySelectorAll('.moment-tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            const type = tab.dataset.type;
+            document.querySelectorAll('.moments-gallery').forEach(g => g.classList.remove('active'));
+            document.getElementById(`${type}Gallery`).classList.add('active');
+        });
+    });
+}
+
+function setupMomentSlider() {
+    const prevBtn = document.getElementById('momentPrev');
+    const nextBtn = document.getElementById('momentNext');
+    
+    if (prevBtn) prevBtn.onclick = () => {
+        moveMomentSlide(-1);
+        resetMomentInterval();
+    };
+    if (nextBtn) nextBtn.onclick = () => {
+        moveMomentSlide(1);
+        resetMomentInterval();
+    };
+    
+    resetMomentInterval();
+}
+
+function resetMomentInterval() {
+    if (momentSliderInterval) clearInterval(momentSliderInterval);
+    momentSliderInterval = setInterval(() => moveMomentSlide(1), 6000);
+}
+
+function moveMomentSlide(direction) {
+    if (momentSlidesCount === 0) return;
+    currentMomentSlide = (currentMomentSlide + direction + momentSlidesCount) % momentSlidesCount;
+    updateMomentSlider();
+}
+
+function goToMomentSlide(index) {
+    currentMomentSlide = index;
+    updateMomentSlider();
+    resetMomentInterval();
+}
+
+function updateMomentSlider() {
+    const track = document.getElementById('photosTrack');
+    const dots = document.querySelectorAll('#momentDots .slider-dot');
+    
+    if (track) {
+        track.style.transform = `translateX(-${currentMomentSlide * 100}%)`;
+    }
+    
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentMomentSlide);
+    });
 }
 
 // ========================================
@@ -572,6 +732,16 @@ function setupRealtimeListeners() {
     db.collection(Collections.EVENTS)
         .onSnapshot(() => {
             loadEvents();
+        });
+
+    db.collection(Collections.QUOTES)
+        .onSnapshot(() => {
+            loadQuotes();
+        });
+
+    db.collection(Collections.MOMENTS)
+        .onSnapshot(() => {
+            loadMoments();
         });
     
     db.collection(Collections.TESTIMONIES)

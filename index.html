@@ -42,28 +42,46 @@
     </section>
 
     <!-- About Section -->
-    <section id="about">
+    <section id="about" class="about-split">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Our Faith Community</h2>
-                <p class="section-subtitle">A place where everyone is welcome to experience the love of God.</p>
-            </div>
-            <div class="grid">
-                <div class="card">
-                    <div class="card-icon">🎯</div>
-                    <h3>Our Mission</h3>
-                    <p id="missionText">To spread the Gospel of Jesus Christ and transform lives through biblical teaching and community service.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">👁️</div>
-                    <h3>Our Vision</h3>
-                    <p id="visionText">Building a community of believers who live out their faith with passion and purpose.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🤝</div>
-                    <h3>Welcome Message</h3>
+            <div class="about-item" id="welcomeSection">
+                <div class="about-content">
+                    <h2 class="section-title">Welcome to Our Church</h2>
                     <p id="welcomeText">We are a vibrant community of believers committed to worshipping God, studying His Word, and serving our community with love and compassion.</p>
                 </div>
+                <div class="about-image">
+                    <img id="welcomeImage" src="" alt="Welcome" referrerPolicy="no-referrer">
+                </div>
+            </div>
+            
+            <div class="about-item reverse" id="missionSection">
+                <div class="about-content">
+                    <h2 class="section-title">Our Mission</h2>
+                    <p id="missionText">To spread the Gospel of Jesus Christ and transform lives through biblical teaching and community service.</p>
+                </div>
+                <div class="about-image">
+                    <img id="missionImage" src="" alt="Mission" referrerPolicy="no-referrer">
+                </div>
+            </div>
+
+            <div class="about-item" id="visionSection">
+                <div class="about-content">
+                    <h2 class="section-title">Our Vision</h2>
+                    <p id="visionText">Building a community of believers who live out their faith with passion and purpose.</p>
+                </div>
+                <div class="about-image">
+                    <img id="visionImage" src="" alt="Vision" referrerPolicy="no-referrer">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Daily Quotes Section -->
+    <section id="quotes" class="quotes-section">
+        <div class="container">
+            <h2 class="section-title" style="color: white; margin-bottom: 3rem;">Daily Quotes</h2>
+            <div class="quote-container" id="quoteContainer">
+                <!-- Quote will be loaded here -->
             </div>
         </div>
     </section>
@@ -77,21 +95,18 @@
             </div>
             <div class="grid">
                 <div class="card service-card" id="sundayService">
-                    <div class="card-icon">⛪</div>
                     <h3 class="service-title">Sunday Worship</h3>
-                    <div class="service-time"><span>🕒</span> 8:00 AM - 11:00 AM</div>
+                    <div class="service-time">8:00 AM - 11:00 AM</div>
                     <p class="service-description">Join us for praise, worship, and powerful biblical teaching</p>
                 </div>
                 <div class="card service-card" id="midweekService">
-                    <div class="card-icon">📖</div>
                     <h3 class="service-title">Midweek Service</h3>
-                    <div class="service-time"><span>🕒</span> 6:00 PM</div>
+                    <div class="service-time">6:00 PM</div>
                     <p class="service-description">Prayer, Bible study, and fellowship</p>
                 </div>
                 <div class="card service-card" id="specialService">
-                    <div class="card-icon">🗓️</div>
                     <h3 class="service-title">Special Programs</h3>
-                    <div class="service-time"><span>🕒</span> Check Events</div>
+                    <div class="service-time">Check Events</div>
                     <p class="service-description">Monthly special services and programs</p>
                 </div>
             </div>
@@ -113,26 +128,65 @@
     </section>
 
     <!-- Events Section -->
-    <section id="events" style="background: var(--bg-white);">
+    <section id="events" class="events-split-section">
+        <div class="container">
+            <div class="events-split-grid">
+                <div class="events-poster-side">
+                    <div class="events-poster-slider" id="eventsPosterSlider">
+                        <div class="events-poster-track" id="eventsGrid">
+                            <!-- Event posters will be loaded here -->
+                        </div>
+                        <div class="slider-controls">
+                            <button class="slider-arrow prev" id="eventPrev"><i data-lucide="chevron-left"></i></button>
+                            <button class="slider-arrow next" id="eventNext"><i data-lucide="chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="events-content-side">
+                    <span class="meta-label">UPCOMING EVENTS</span>
+                    <h2 class="split-title">Join our Services and Programs</h2>
+                    <p class="split-description">Find out God's plan for you. Experience Him uniquely.</p>
+                    <div class="split-btns">
+                        <a href="https://www.youtube.com/@SalvationMinistries" target="_blank" class="btn btn-red">Livestream</a>
+                        <a href="#events" class="btn btn-outline">View Events</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Moments Section -->
+    <section id="moments">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Upcoming Events</h2>
-                <p class="section-subtitle">Stay updated with our community activities and special programs.</p>
-            </div>
-            <div class="empty-state" id="eventsEmpty">
-                <p>No upcoming events. Stay tuned!</p>
+                <h2 class="section-title">Moments</h2>
+                <p class="section-subtitle">Capturing the life and spirit of our church community.</p>
             </div>
             
-            <div class="events-slider-container" id="eventsSlider" style="display: none;">
-                <button class="slider-btn prev" id="eventPrev">
-                    <i data-lucide="chevron-left"></i>
-                </button>
-                <div class="events-track" id="eventsGrid"></div>
-                <button class="slider-btn next" id="eventNext">
-                    <i data-lucide="chevron-right"></i>
-                </button>
+            <div class="moments-tabs">
+                <button class="moment-tab active" data-type="photos">Photos</button>
+                <button class="moment-tab" data-type="videos">Videos</button>
             </div>
-            <div class="slider-dots" id="eventDots"></div>
+
+            <div class="moments-content">
+                <div id="photosGallery" class="moments-gallery active">
+                    <div class="moments-slider" id="momentsSlider">
+                        <div class="moments-track" id="photosTrack">
+                            <!-- Photos will be loaded here -->
+                        </div>
+                        <div class="slider-controls">
+                            <button class="slider-arrow prev" id="momentPrev"><i data-lucide="chevron-left"></i></button>
+                            <button class="slider-arrow next" id="momentNext"><i data-lucide="chevron-right"></i></button>
+                        </div>
+                        <div class="slider-dots" id="momentDots"></div>
+                    </div>
+                </div>
+                <div id="videosGallery" class="moments-gallery">
+                    <div class="video-grid" id="videosTrack">
+                        <!-- Videos will be loaded here -->
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -203,21 +257,18 @@
                     <p style="color: var(--text-muted); margin-bottom: 3rem;">Have questions or need prayer? Reach out to us and we'll be happy to connect with you.</p>
                     
                     <div class="contact-item">
-                        <div class="contact-icon">📧</div>
                         <div class="contact-text">
                             <h4>Email Us</h4>
                             <p id="contactEmail">info@salvationministries-adageorge.org</p>
                         </div>
                     </div>
                     <div class="contact-item">
-                        <div class="contact-icon">📞</div>
                         <div class="contact-text">
                             <h4>Call Us</h4>
                             <p id="contactPhone">+234 123 456 7890</p>
                         </div>
                     </div>
                     <div class="contact-item">
-                        <div class="contact-icon">📍</div>
                         <div class="contact-text">
                             <h4>Visit Us</h4>
                             <p id="contactAddress">Ada George Road, Port Harcourt, Rivers State, Nigeria</p>

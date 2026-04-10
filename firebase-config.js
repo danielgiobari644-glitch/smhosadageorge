@@ -22,7 +22,9 @@ const Collections = {
   TESTIMONIES: 'testimonies',
   CONTENT: 'content',
   ADMIN: 'admin',
-  MESSAGES: 'messages'
+  MESSAGES: 'messages',
+  QUOTES: 'quotes',
+  MOMENTS: 'moments'
 };
 
 // Global flag to track initialization
@@ -53,8 +55,35 @@ async function initializeDefaultData() {
       // Initialize default content
       await db.collection(Collections.CONTENT).doc('about').set({
         mission: 'To spread the Gospel of Jesus Christ and transform lives through biblical teaching and community service.',
+        missionImage: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&q=80',
         vision: 'Building a community of believers who live out their faith with passion and purpose.',
-        welcomeMessage: 'We are a vibrant community of believers committed to worshipping God, studying His Word, and serving our community with love and compassion.'
+        visionImage: 'https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=800&q=80',
+        welcomeMessage: 'We are a vibrant community of believers committed to worshipping God, studying His Word, and serving our community with love and compassion.',
+        welcomeImage: 'https://images.unsplash.com/photo-1510076857177-7470076d4098?w=800&q=80'
+      });
+
+      // Initialize default quotes
+      await db.collection(Collections.QUOTES).add({
+        text: "The word of God is a lamp unto my feet and a light unto my path.",
+        author: "Psalm 119:105",
+        active: true,
+        createdAt: firebase.firestore.Timestamp.now()
+      });
+
+      // Initialize default moments
+      await db.collection(Collections.MOMENTS).add({
+        type: 'photo',
+        url: 'https://images.unsplash.com/photo-1438032005730-c779502df39b?w=1200&q=80',
+        title: 'Sunday Worship',
+        description: 'A powerful time in God\'s presence.',
+        createdAt: firebase.firestore.Timestamp.now()
+      });
+
+      await db.collection(Collections.MOMENTS).add({
+        type: 'video',
+        url: 'https://www.facebook.com/smhosglobal',
+        title: 'Live Service Highlights',
+        createdAt: firebase.firestore.Timestamp.now()
       });
 
       // Initialize default service times

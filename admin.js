@@ -178,6 +178,8 @@ async function loadAllData() {
     loadSermonsList();
     loadEventsList();
     loadTestimoniesList();
+    loadQuotesList();
+    loadMomentsList();
     loadMessagesList();
 }
 
@@ -241,12 +243,18 @@ async function loadContentData() {
         if (doc.exists) {
             const content = doc.data();
             const missionInput = document.getElementById('missionInput');
+            const missionImageUrl = document.getElementById('missionImageUrl');
             const visionInput = document.getElementById('visionInput');
+            const visionImageUrl = document.getElementById('visionImageUrl');
             const welcomeInput = document.getElementById('welcomeInput');
+            const welcomeImageUrl = document.getElementById('welcomeImageUrl');
 
             if (missionInput) missionInput.value = content.mission || '';
+            if (missionImageUrl) missionImageUrl.value = content.missionImage || '';
             if (visionInput) visionInput.value = content.vision || '';
+            if (visionImageUrl) visionImageUrl.value = content.visionImage || '';
             if (welcomeInput) welcomeInput.value = content.welcomeMessage || '';
+            if (welcomeImageUrl) welcomeImageUrl.value = content.welcomeImage || '';
         }
     } catch (error) {
         console.error('Error loading content data:', error);
@@ -597,8 +605,129 @@ async function deleteTestimony(id) {
 }
 
 // ========================================
-// Form Handlers
+// Quotes Management
 // ========================================
+
+async function loadQuotesList() {
+    try {
+        const list = document.getElementById('quotesList');
+        if (!list) return;
+        list.innerHTML = '';
+
+        const snapshot = await db.collection(Collections.QUOTES)
+            .orderBy('createdAt', 'desc')
+            .get();
+
+        if (snapshot.empty) {
+            list.innerHTML = '<p class="empty-msg">No quotes added yet</p>';
+            return;
+        }
+
+        snapshot.forEach(doc => {
+            const quote = doc.data();
+            const card = document.createElement('div');
+            card.className = 'item-card';
+            card.innerHTML = `
+                <div class="item-info">
+                    <p style="font-style: italic; font-size: 1.1rem;">"${quote.text}"</p>
+                    <p style="opacity: 0.7; margin-top: 0.5rem;">— ${quote.author || 'Unknown'}</p>
+                </div>
+                <div class="item-actions">
+                    <button class="btn-admin" style="background: #ef4444;" onclick="deleteQuote('${doc.id}')">Delete</button>
+                </div>
+            `;
+            list.appendChild(card);
+        });
+    } catch (error) {
+        console.error('Error loading quotes:', error);
+    }
+}
+
+async function deleteQuote(id) {
+    if (confirm('Are you sure you want to delete this quote?')) {
+        try {
+            await db.collection(Collections.QUOTES).doc(id).delete();
+            loadQuotesList();
+        } catch (error) {
+            console.error('Error deleting quote:', error);
+            alert('Error deleting quote');
+        }
+    }
+}
+
+// ========================================
+// Moments Management
+// ========================================
+
+async function loadMomentsList() {
+    try {
+        const list = document.getElementById('momentsList');
+        if (!list) return;
+        list.innerHTML = '';
+
+        const snapshot = await db.collection(Collections.MOMENTS)
+            .orderBy('createdAt', 'desc')
+            .get();
+
+        if (snapshot.empty) {
+            list.innerHTML = '<p class="empty-msg">No moments added yet</p>';
+            return;
+        }
+
+        snapshot.forEach(doc => {
+            const moment = doc.data();
+            const card = document.createElement('div');
+            card.className = 'item-card';
+            card.innerHTML = `
+                <div class="item-info">
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        ${moment.type === 'photo' ? 
+                            `<img src="${moment.url}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">` :
+                            `<div style="width: 60px; height: 60px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;"><i data-lucide="play"></i></div>`
+                        }
+                        <div>
+                            <h3>${moment.title || (moment.type === 'photo' ? 'Photo Moment' : 'Video Moment')}</h3>
+                            <p style="opacity: 0.7; font-size: 0.9rem;">${moment.type.toUpperCase()}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-actions">
+                    <button class="btn-admin" style="background: #ef4444;" onclick="deleteMoment('${doc.id}')">Delete</button>
+                </div>
+            `;
+            list.appendChild(card);
+        });
+        if (window.lucide) lucide.createIcons();
+    } catch (error) {
+        console.error('Error loading moments:', error);
+    }
+}
+
+async function deleteMoment(id) {
+    if (confirm('Are you sure you want to delete this moment?')) {
+        try {
+            await db.collection(Collections.MOMENTS).doc(id).delete();
+            loadMomentsList();
+        } catch (error) {
+            console.error('Error deleting moment:', error);
+            alert('Error deleting moment');
+        }
+    }
+}
+
+function setupMomentsAdminTabs() {
+    const tabs = document.querySelectorAll('#momentsPanel .tab-btn');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            const target = tab.dataset.tab;
+            document.querySelectorAll('#momentsPanel .tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(target).classList.add('active');
+        });
+    });
+}
 
 function setupForms() {
     // Theme Form
@@ -655,8 +784,11 @@ function setupForms() {
         try {
             await db.collection(Collections.CONTENT).doc('about').update({
                 mission: document.getElementById('missionInput').value,
+                missionImage: document.getElementById('missionImageUrl').value,
                 vision: document.getElementById('visionInput').value,
-                welcomeMessage: document.getElementById('welcomeInput').value
+                visionImage: document.getElementById('visionImageUrl').value,
+                welcomeMessage: document.getElementById('welcomeInput').value,
+                welcomeImage: document.getElementById('welcomeImageUrl').value
             });
             alert('Content saved successfully!');
         } catch (error) {
@@ -664,6 +796,66 @@ function setupForms() {
             alert('Error saving content');
         }
     });
+
+    // Quote Form
+    document.getElementById('quoteForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+            await db.collection(Collections.QUOTES).add({
+                text: document.getElementById('quoteText').value,
+                author: document.getElementById('quoteAuthor').value,
+                active: true,
+                createdAt: firebase.firestore.Timestamp.now()
+            });
+            e.target.reset();
+            loadQuotesList();
+            alert('Quote added successfully!');
+        } catch (error) {
+            console.error('Error adding quote:', error);
+            alert('Error adding quote');
+        }
+    });
+
+    // Moment Photo Form
+    document.getElementById('momentPhotoForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+            await db.collection(Collections.MOMENTS).add({
+                type: 'photo',
+                url: document.getElementById('momentPhotoUrl').value,
+                title: document.getElementById('momentPhotoTitle').value,
+                description: document.getElementById('momentPhotoDesc').value,
+                createdAt: firebase.firestore.Timestamp.now()
+            });
+            e.target.reset();
+            loadMomentsList();
+            alert('Photo moment added successfully!');
+        } catch (error) {
+            console.error('Error adding photo moment:', error);
+            alert('Error adding photo moment');
+        }
+    });
+
+    // Moment Video Form
+    document.getElementById('momentVideoForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+            await db.collection(Collections.MOMENTS).add({
+                type: 'video',
+                url: document.getElementById('momentVideoUrl').value,
+                title: document.getElementById('momentVideoTitle').value,
+                createdAt: firebase.firestore.Timestamp.now()
+            });
+            e.target.reset();
+            loadMomentsList();
+            alert('Video moment added successfully!');
+        } catch (error) {
+            console.error('Error adding video moment:', error);
+            alert('Error adding video moment');
+        }
+    });
+
+    setupMomentsAdminTabs();
     
     // Services Form
     document.getElementById('servicesForm')?.addEventListener('submit', async (e) => {
@@ -861,3 +1053,5 @@ window.approveTestimony = approveTestimony;
 window.rejectTestimony = rejectTestimony;
 window.deleteTestimony = deleteTestimony;
 window.deleteMessage = deleteMessage;
+window.deleteQuote = deleteQuote;
+window.deleteMoment = deleteMoment;
