@@ -123,6 +123,12 @@ async function loadThemeSettings() {
             if (heroTitle && theme.heroText) heroTitle.textContent = theme.heroText;
             if (heroSubtext && theme.heroSubtext) heroSubtext.textContent = theme.heroSubtext;
             
+            // Update livestream button
+            const livestreamBtn = document.getElementById('livestreamBtn');
+            if (livestreamBtn && theme.livestreamUrl) {
+                livestreamBtn.href = theme.livestreamUrl;
+            }
+            
             // Apply dark mode if set
             if (theme.mode === 'dark') {
                 document.body.classList.add('dark-mode');
@@ -206,13 +212,16 @@ async function loadServiceTimes() {
         if (doc.exists) {
             const schedule = doc.data();
             
-            // Update Sunday service
-            if (schedule.sunday) {
-                const sundayCard = document.getElementById('sundayService');
-                if (sundayCard) {
-                    sundayCard.querySelector('.service-title').textContent = schedule.sunday.title;
-                    sundayCard.querySelector('.service-time').textContent = schedule.sunday.time;
-                    sundayCard.querySelector('.service-description').textContent = schedule.sunday.description;
+            // Update Sunday services
+            for (let i = 1; i <= 4; i++) {
+                const key = `sunday${i}`;
+                if (schedule[key]) {
+                    const card = document.getElementById(`sundayService${i}`);
+                    if (card) {
+                        card.querySelector('.service-title').textContent = schedule[key].title;
+                        card.querySelector('.service-time').textContent = schedule[key].time;
+                        card.querySelector('.service-description').textContent = schedule[key].description;
+                    }
                 }
             }
             

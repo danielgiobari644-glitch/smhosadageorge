@@ -49,7 +49,8 @@ async function initializeDefaultData() {
         heroText: 'Welcome to Salvation Ministries Ada George',
         heroSubtext: 'Where Faith Meets Purpose',
         logoUrl: '/uploads/1775217322747_image.png',
-        faviconUrl: '/uploads/1775217322747_image.png'
+        faviconUrl: '/uploads/1775217322747_image.png',
+        livestreamUrl: 'https://www.youtube.com/@SalvationMinistries'
       });
 
       // Initialize default content
@@ -88,10 +89,25 @@ async function initializeDefaultData() {
 
       // Initialize default service times
       await db.collection(Collections.SERVICES).doc('schedule').set({
-        sunday: {
-          title: 'Sunday Worship Service',
-          time: '8:00 AM - 11:00 AM',
-          description: 'Join us for praise, worship, and powerful biblical teaching'
+        sunday1: {
+          title: '1st Sunday Service',
+          time: '6:30 AM',
+          description: 'Early morning worship and word'
+        },
+        sunday2: {
+          title: '2nd Sunday Service',
+          time: '8:00 AM',
+          description: 'Praise, worship and transformation'
+        },
+        sunday3: {
+          title: '3rd Sunday Service',
+          time: '9:30 AM',
+          description: 'Encounter with the word'
+        },
+        sunday4: {
+          title: '4th Sunday Service',
+          time: '11:00 AM',
+          description: 'Closing service of the day'
         },
         midweek: {
           title: 'Midweek Service',

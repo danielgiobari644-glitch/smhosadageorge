@@ -198,6 +198,7 @@ async function loadThemeData() {
             const accentColor = document.getElementById('accentColor');
             const logoUrl = document.getElementById('logoUrl');
             const faviconUrl = document.getElementById('faviconUrl');
+            const livestreamUrl = document.getElementById('livestreamUrl');
 
             if (themeMode) themeMode.value = theme.mode || 'light';
             if (primaryColor) primaryColor.value = theme.primaryColor || '#2c5f7a';
@@ -205,6 +206,7 @@ async function loadThemeData() {
             if (accentColor) accentColor.value = theme.accentColor || '#6366f1';
             if (logoUrl) logoUrl.value = theme.logoUrl || '';
             if (faviconUrl) faviconUrl.value = theme.faviconUrl || '';
+            if (livestreamUrl) livestreamUrl.value = theme.livestreamUrl || '';
         }
     } catch (error) {
         console.error('Error loading theme data:', error);
@@ -271,13 +273,16 @@ async function loadServicesData() {
         if (doc.exists) {
             const schedule = doc.data();
             
-            if (schedule.sunday) {
-                const sundayTitle = document.getElementById('sundayTitle');
-                const sundayTime = document.getElementById('sundayTime');
-                const sundayDescription = document.getElementById('sundayDescription');
-                if (sundayTitle) sundayTitle.value = schedule.sunday.title || '';
-                if (sundayTime) sundayTime.value = schedule.sunday.time || '';
-                if (sundayDescription) sundayDescription.value = schedule.sunday.description || '';
+            for (let i = 1; i <= 4; i++) {
+                const key = `sunday${i}`;
+                if (schedule[key]) {
+                    const title = document.getElementById(`sunday${i}Title`);
+                    const time = document.getElementById(`sunday${i}Time`);
+                    const desc = document.getElementById(`sunday${i}Description`);
+                    if (title) title.value = schedule[key].title || '';
+                    if (time) time.value = schedule[key].time || '';
+                    if (desc) desc.value = schedule[key].description || '';
+                }
             }
             
             if (schedule.midweek) {
@@ -744,9 +749,11 @@ function setupForms() {
             
             const logoUrl = document.getElementById('logoUrl').value.trim();
             const faviconUrl = document.getElementById('faviconUrl').value.trim();
+            const livestreamUrl = document.getElementById('livestreamUrl').value.trim();
             
             if (logoUrl) updates.logoUrl = logoUrl;
             if (faviconUrl) updates.faviconUrl = faviconUrl;
+            if (livestreamUrl) updates.livestreamUrl = livestreamUrl;
             
             await db.collection(Collections.SETTINGS).doc('theme').update(updates);
             
@@ -862,23 +869,28 @@ function setupForms() {
         e.preventDefault();
         
         try {
-            await db.collection(Collections.SERVICES).doc('schedule').update({
-                sunday: {
-                    title: document.getElementById('sundayTitle').value,
-                    time: document.getElementById('sundayTime').value,
-                    description: document.getElementById('sundayDescription').value
-                },
-                midweek: {
-                    title: document.getElementById('midweekTitle').value,
-                    time: document.getElementById('midweekTime').value,
-                    description: document.getElementById('midweekDescription').value
-                },
-                special: {
-                    title: document.getElementById('specialTitle').value,
-                    time: document.getElementById('specialTime').value,
-                    description: document.getElementById('specialDescription').value
-                }
-            });
+            const updates = {};
+            for (let i = 1; i <= 4; i++) {
+                updates[`sunday${i}`] = {
+                    title: document.getElementById(`sunday${i}Title`).value,
+                    time: document.getElementById(`sunday${i}Time`).value,
+                    description: document.getElementById(`sunday${i}Description`).value
+                };
+            }
+            
+            updates.midweek = {
+                title: document.getElementById('midweekTitle').value,
+                time: document.getElementById('midweekTime').value,
+                description: document.getElementById('midweekDescription').value
+            };
+            
+            updates.special = {
+                title: document.getElementById('specialTitle').value,
+                time: document.getElementById('specialTime').value,
+                description: document.getElementById('specialDescription').value
+            };
+
+            await db.collection(Collections.SERVICES).doc('schedule').update(updates);
             alert('Service times saved successfully!');
         } catch (error) {
             console.error('Error saving services:', error);

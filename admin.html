@@ -425,6 +425,10 @@
                                 <input type="url" id="faviconUrl" placeholder="https://example.com/favicon.png">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label>YouTube Livestream URL</label>
+                            <input type="url" id="livestreamUrl" placeholder="https://youtube.com/@SalvationMinistries">
+                        </div>
                         <button type="submit" class="btn-admin">Update Theme</button>
                     </form>
                 </div>
@@ -491,20 +495,78 @@
                 <div class="admin-card">
                     <h2>Service Schedule</h2>
                     <form id="servicesForm">
-                        <h3 style="margin: 1rem 0; color: var(--primary-color);">Sunday Service</h3>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Title</label>
-                                <input type="text" id="sundayTitle">
+                        <h3 style="margin: 1rem 0; color: var(--primary-color);">Sunday Services</h3>
+                        
+                        <div style="border-bottom: 1px solid #eee; padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+                            <h4>1st Service</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input type="text" id="sunday1Title">
+                                </div>
+                                <div class="form-group">
+                                    <label>Time</label>
+                                    <input type="text" id="sunday1Time">
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label>Time</label>
-                                <input type="text" id="sundayTime">
+                                <label>Description</label>
+                                <textarea id="sunday1Description" rows="2"></textarea>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Description</label>
-                            <textarea id="sundayDescription" rows="2"></textarea>
+
+                        <div style="border-bottom: 1px solid #eee; padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+                            <h4>2nd Service</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input type="text" id="sunday2Title">
+                                </div>
+                                <div class="form-group">
+                                    <label>Time</label>
+                                    <input type="text" id="sunday2Time">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="sunday2Description" rows="2"></textarea>
+                            </div>
+                        </div>
+
+                        <div style="border-bottom: 1px solid #eee; padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+                            <h4>3rd Service</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input type="text" id="sunday3Title">
+                                </div>
+                                <div class="form-group">
+                                    <label>Time</label>
+                                    <input type="text" id="sunday3Time">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="sunday3Description" rows="2"></textarea>
+                            </div>
+                        </div>
+
+                        <div style="border-bottom: 1px solid #eee; padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+                            <h4>4th Service</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input type="text" id="sunday4Title">
+                                </div>
+                                <div class="form-group">
+                                    <label>Time</label>
+                                    <input type="text" id="sunday4Time">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="sunday4Description" rows="2"></textarea>
+                            </div>
                         </div>
 
                         <h3 style="margin: 2rem 0 1rem; color: var(--primary-color);">Midweek Service</h3>
