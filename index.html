@@ -18,6 +18,9 @@
                 <img src="/uploads/1775217322747_image.png" alt="Salvation Ministries Logo">
                 <span>Salvation Ministries</span>
             </a>
+            <button class="mobile-toggle" id="mobileToggle">
+                <i data-lucide="menu"></i>
+            </button>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="#home" class="nav-link">Home</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
@@ -213,22 +216,29 @@
                 <p class="section-subtitle">Real stories of God's faithfulness in the lives of our members.</p>
             </div>
             
-            <div class="grid" style="margin-bottom: 5rem;">
-                <div class="form-card">
-                    <h3>Share Your Testimony</h3>
-                    <p style="margin-bottom: 2rem; color: var(--text-muted);">Has God done something amazing in your life? We'd love to hear about it!</p>
-                    <form id="testimonyForm">
-                        <div class="form-group">
-                            <label for="testimonyName">Full Name</label>
-                            <input type="text" id="testimonyName" placeholder="Enter your name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="testimonyMessage">Your Story</label>
-                            <textarea id="testimonyMessage" placeholder="Tell us what God has done..." rows="5" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Testimony</button>
-                    </form>
-                    <div id="testimonyFeedback" class="form-feedback"></div>
+            <div class="testimony-toggle-wrapper" style="margin-bottom: 5rem;">
+                <button id="toggleTestimonyBtn" class="btn btn-outline" style="margin: 0 auto 2rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i data-lucide="plus-circle"></i>
+                    Share Your Testimony
+                </button>
+                
+                <div id="testimonyFormContainer" class="testimony-form-container">
+                    <div class="form-card" style="max-width: 600px; margin: 0 auto;">
+                        <h3>Share Your Testimony</h3>
+                        <p style="margin-bottom: 2rem; color: var(--text-muted);">Has God done something amazing in your life? We'd love to hear about it!</p>
+                        <form id="testimonyForm">
+                            <div class="form-group">
+                                <label for="testimonyName">Full Name</label>
+                                <input type="text" id="testimonyName" placeholder="Enter your name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="testimonyMessage">Your Story</label>
+                                <textarea id="testimonyMessage" placeholder="Tell us what God has done..." rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Testimony</button>
+                        </form>
+                        <div id="testimonyFeedback" class="form-feedback"></div>
+                    </div>
                 </div>
             </div>
 
@@ -245,19 +255,8 @@
             <div class="offering">
                 <h2>Offering & Donations</h2>
                 <p style="max-width: 600px; margin: 0 auto 3rem; opacity: 0.9;">Your generous giving helps us continue spreading the Gospel and serving our community both locally and globally.</p>
-                <div class="offering-details">
-                    <div class="offering-item">
-                        <h4>Bank</h4>
-                        <p id="offeringBank">Sample Bank</p>
-                    </div>
-                    <div class="offering-item">
-                        <h4>Account Name</h4>
-                        <p id="offeringAccountName">Salvation Ministries Ada George</p>
-                    </div>
-                    <div class="offering-item">
-                        <h4>Account Number</h4>
-                        <p id="offeringAccountNumber">0123456789</p>
-                    </div>
+                <div class="offering-grid" id="offeringAccounts">
+                    <!-- Bank accounts will be loaded here -->
                 </div>
             </div>
         </div>
@@ -320,7 +319,7 @@
                 <img src="/uploads/1775217322747_image.png" alt="Salvation Ministries Logo" style="width: 40px; border-radius: 8px;">
                 <span>Salvation Ministries</span>
             </div>
-            <p>&copy; 2024 Salvation Ministries Ada George. All rights reserved.</p>
+            <p>&copy; 2026 Salvation Ministries Ada George. All rights reserved.</p>
         </div>
     </footer>
 

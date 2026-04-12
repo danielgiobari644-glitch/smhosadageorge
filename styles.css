@@ -110,6 +110,15 @@ body.dark-mode .navbar {
     object-fit: cover;
 }
 
+.mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-dark);
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
 .nav-menu {
     display: flex;
     list-style: none;
@@ -332,6 +341,11 @@ body.dark-mode .card {
 }
 
 /* Sermon Cards Specific */
+#sermonsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
 .sermon-card {
     padding: 0;
     overflow: hidden;
@@ -353,7 +367,30 @@ body.dark-mode .card {
 }
 
 .sermon-info {
-    padding: 2rem;
+    padding: 1.25rem;
+}
+
+.sermon-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+    font-weight: 700;
+}
+
+.sermon-date {
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.sermon-description {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 /* Event Cards Specific */
@@ -412,6 +449,30 @@ body.dark-mode .card {
     margin-top: auto;
 }
 
+/* Testimony Form Toggle */
+.testimony-form-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.testimony-form-container.active {
+    max-height: 1000px; /* Large enough to fit content */
+    opacity: 1;
+    transform: translateY(0);
+    margin-top: 2rem;
+}
+
+#toggleTestimonyBtn i {
+    transition: transform 0.3s ease;
+}
+
+#toggleTestimonyBtn.active i {
+    transform: rotate(45deg);
+}
+
 /* Offering Section */
 .offering {
     background: var(--primary-color);
@@ -440,25 +501,56 @@ body.dark-mode .card {
     margin-bottom: 2rem;
 }
 
-.offering-details {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 3rem;
+.offering-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
     margin-top: 3rem;
 }
 
+.offering-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: left;
+    transition: var(--transition);
+}
+
+.offering-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-5px);
+}
+
+.offering-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: white;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 0.75rem;
+}
+
+.offering-item {
+    margin-bottom: 1rem;
+}
+
+.offering-item:last-child {
+    margin-bottom: 0;
+}
+
 .offering-item h4 {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    opacity: 0.8;
-    margin-bottom: 0.5rem;
+    opacity: 0.7;
+    margin-bottom: 0.25rem;
 }
 
 .offering-item p {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 /* Contact Section */
@@ -1010,26 +1102,66 @@ body.dark-mode .slider-dot {
         grid-template-columns: 1fr;
         gap: 4rem;
     }
+    .events-split-grid {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+    }
+    .split-title {
+        font-size: 3rem;
+    }
 }
 
 @media (max-width: 768px) {
     section {
         padding: 80px 0;
     }
-    .hero-title {
-        font-size: 3.5rem;
-    }
-    .section-title {
-        font-size: 2.5rem;
+    .mobile-toggle {
+        display: block;
     }
     .nav-menu {
-        display: none;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: var(--bg-white);
+        flex-direction: column;
+        padding: 2rem;
+        gap: 1.5rem;
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-150%);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 99;
+    }
+    .nav-menu.active {
+        transform: translateY(0);
+    }
+    body.dark-mode .nav-menu {
+        background: var(--bg-card);
+    }
+    .hero-title {
+        font-size: 3rem;
+    }
+    .section-title {
+        font-size: 2.25rem;
     }
     .offering {
-        padding: 3rem 1.5rem;
+        padding: 4rem 1.5rem;
     }
     .offering h2 {
-        font-size: 2rem;
+        font-size: 2.5rem;
+    }
+    .about-item {
+        flex-direction: column !important;
+        gap: 3rem;
+    }
+    .about-image {
+        height: 300px;
+    }
+    .moment-slide img {
+        height: 400px;
+    }
+    .split-btns {
+        flex-direction: column;
     }
 }
 

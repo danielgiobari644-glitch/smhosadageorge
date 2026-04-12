@@ -326,19 +326,59 @@ async function loadContactData() {
             if (contactPhoneAdmin) contactPhoneAdmin.value = contact.phone || '';
             if (contactAddressAdmin) contactAddressAdmin.value = contact.address || '';
             
-            if (contact.offeringAccount) {
-                const offeringBankAdmin = document.getElementById('offeringBankAdmin');
-                const offeringAccountNumberAdmin = document.getElementById('offeringAccountNumberAdmin');
-                const offeringAccountNameAdmin = document.getElementById('offeringAccountNameAdmin');
-
-                if (offeringBankAdmin) offeringBankAdmin.value = contact.offeringAccount.bank || '';
-                if (offeringAccountNumberAdmin) offeringAccountNumberAdmin.value = contact.offeringAccount.accountNumber || '';
-                if (offeringAccountNameAdmin) offeringAccountNameAdmin.value = contact.offeringAccount.accountName || '';
+            const container = document.getElementById('bankAccountsList');
+            if (container) {
+                container.innerHTML = '';
+                const accounts = contact.offeringAccounts || (contact.offeringAccount ? [contact.offeringAccount] : []);
+                accounts.forEach(account => addBankAccountRow(account));
             }
         }
     } catch (error) {
         console.error('Error loading contact data:', error);
     }
+}
+
+function addBankAccountRow(data = {}) {
+    const container = document.getElementById('bankAccountsList');
+    if (!container) return;
+
+    const row = document.createElement('div');
+    row.className = 'bank-account-row admin-card';
+    row.style.marginBottom = '1.5rem';
+    row.style.background = 'rgba(0,0,0,0.02)';
+    row.style.padding = '1.5rem';
+    row.style.position = 'relative';
+
+    row.innerHTML = `
+        <button type="button" class="remove-bank-btn" style="position: absolute; top: 1rem; right: 1rem; background: #fee2e2; color: #ef4444; border: none; padding: 0.5rem; border-radius: 8px; cursor: pointer;">
+            <i data-lucide="trash-2"></i>
+        </button>
+        <div class="form-group">
+            <label>Account Title (Optional - e.g. General Offering, Tithe)</label>
+            <input type="text" class="bank-title" value="${data.title || ''}">
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Bank Name</label>
+                <input type="text" class="bank-name" value="${data.bank || ''}" required>
+            </div>
+            <div class="form-group">
+                <label>Account Number</label>
+                <input type="text" class="bank-number" value="${data.accountNumber || ''}" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Account Name</label>
+            <input type="text" class="bank-acc-name" value="${data.accountName || ''}" required>
+        </div>
+    `;
+
+    row.querySelector('.remove-bank-btn').addEventListener('click', () => {
+        row.remove();
+    });
+
+    container.appendChild(row);
+    if (window.lucide) lucide.createIcons();
 }
 
 // ========================================
@@ -978,16 +1018,20 @@ function setupForms() {
     document.getElementById('contactForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         
+        const bankRows = document.querySelectorAll('.bank-account-row');
+        const offeringAccounts = Array.from(bankRows).map(row => ({
+            title: row.querySelector('.bank-title').value.trim(),
+            bank: row.querySelector('.bank-name').value.trim(),
+            accountNumber: row.querySelector('.bank-number').value.trim(),
+            accountName: row.querySelector('.bank-acc-name').value.trim()
+        }));
+
         try {
             await db.collection(Collections.CONTENT).doc('contact').update({
                 email: document.getElementById('contactEmailAdmin').value,
                 phone: document.getElementById('contactPhoneAdmin').value,
                 address: document.getElementById('contactAddressAdmin').value,
-                offeringAccount: {
-                    bank: document.getElementById('offeringBankAdmin').value,
-                    accountNumber: document.getElementById('offeringAccountNumberAdmin').value,
-                    accountName: document.getElementById('offeringAccountNameAdmin').value
-                }
+                offeringAccounts: offeringAccounts
             });
             alert('Contact information saved successfully!');
         } catch (error) {
@@ -995,6 +1039,9 @@ function setupForms() {
             alert('Error saving contact information');
         }
     });
+
+    // Add Bank Button
+    document.getElementById('addBankBtn')?.addEventListener('click', () => addBankAccountRow());
 }
 
 async function loadMessagesList() {

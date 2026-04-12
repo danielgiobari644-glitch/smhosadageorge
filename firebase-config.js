@@ -126,11 +126,14 @@ async function initializeDefaultData() {
         email: 'info@salvationministries-adageorge.org',
         phone: '+234 123 456 7890',
         address: 'Ada George Road, Port Harcourt, Rivers State, Nigeria',
-        offeringAccount: {
-          bank: 'Sample Bank',
-          accountName: 'Salvation Ministries Ada George',
-          accountNumber: '0123456789'
-        }
+        offeringAccounts: [
+          {
+            title: 'General Offering',
+            bank: 'Sample Bank',
+            accountName: 'Salvation Ministries Ada George',
+            accountNumber: '0123456789'
+          }
+        ]
       });
 
       // Initialize default admin credentials

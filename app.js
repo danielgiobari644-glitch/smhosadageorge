@@ -45,13 +45,18 @@ function initializeSite() {
 // ========================================
 
 function setupNavigation() {
-    const navToggle = document.getElementById('navToggle');
+    const navToggle = document.getElementById('mobileToggle');
     const navMenu = document.getElementById('navMenu');
     const navLinks = document.querySelectorAll('.nav-link');
     
     // Mobile menu toggle
     navToggle?.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
+        const isActive = navMenu.classList.toggle('active');
+        const icon = navToggle.querySelector('i');
+        if (icon) {
+            icon.setAttribute('data-lucide', isActive ? 'x' : 'menu');
+            if (window.lucide) lucide.createIcons();
+        }
     });
     
     // Smooth scroll and close menu
@@ -63,6 +68,11 @@ function setupNavigation() {
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth' });
                     navMenu.classList.remove('active');
+                    const icon = navToggle?.querySelector('i');
+                    if (icon) {
+                        icon.setAttribute('data-lucide', 'menu');
+                        if (window.lucide) lucide.createIcons();
+                    }
                 }
             }
         });
@@ -624,6 +634,38 @@ async function loadContactInfo() {
 }
 
 // ========================================
+// Mobile Menu
+// ========================================
+
+function setupMobileMenu() {
+    const toggle = document.getElementById('mobileToggle');
+    const menu = document.getElementById('navMenu');
+    
+    if (!toggle || !menu) return;
+    
+    toggle.addEventListener('click', () => {
+        menu.classList.toggle('active');
+        const icon = toggle.querySelector('i');
+        if (menu.classList.contains('active')) {
+            icon.setAttribute('data-lucide', 'x');
+        } else {
+            icon.setAttribute('data-lucide', 'menu');
+        }
+        if (window.lucide) lucide.createIcons();
+    });
+    
+    // Close menu when clicking a link
+    menu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            menu.classList.remove('active');
+            const icon = toggle.querySelector('i');
+            icon.setAttribute('data-lucide', 'menu');
+            if (window.lucide) lucide.createIcons();
+        });
+    });
+}
+
+// ========================================
 // Offering Details
 // ========================================
 
@@ -632,15 +674,45 @@ async function loadOfferingDetails() {
         const doc = await db.collection(Collections.CONTENT).doc('contact').get();
         if (doc.exists) {
             const contact = doc.data();
+            const container = document.getElementById('offeringAccounts');
+            if (!container) return;
             
-            if (contact.offeringAccount) {
-                const bankEl = document.getElementById('offeringBank');
-                const accountNameEl = document.getElementById('offeringAccountName');
-                const accountNumberEl = document.getElementById('offeringAccountNumber');
-                
-                if (bankEl) bankEl.textContent = contact.offeringAccount.bank;
-                if (accountNameEl) accountNameEl.textContent = contact.offeringAccount.accountName;
-                if (accountNumberEl) accountNumberEl.textContent = contact.offeringAccount.accountNumber;
+            if (contact.offeringAccounts && contact.offeringAccounts.length > 0) {
+                container.innerHTML = contact.offeringAccounts.map(account => `
+                    <div class="offering-card">
+                        ${account.title ? `<h3>${account.title}</h3>` : ''}
+                        <div class="offering-item">
+                            <h4>Bank</h4>
+                            <p>${account.bank}</p>
+                        </div>
+                        <div class="offering-item">
+                            <h4>Account Name</h4>
+                            <p>${account.accountName}</p>
+                        </div>
+                        <div class="offering-item">
+                            <h4>Account Number</h4>
+                            <p>${account.accountNumber}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } else if (contact.offeringAccount) {
+                // Fallback for old data structure
+                container.innerHTML = `
+                    <div class="offering-card">
+                        <div class="offering-item">
+                            <h4>Bank</h4>
+                            <p>${contact.offeringAccount.bank}</p>
+                        </div>
+                        <div class="offering-item">
+                            <h4>Account Name</h4>
+                            <p>${contact.offeringAccount.accountName}</p>
+                        </div>
+                        <div class="offering-item">
+                            <h4>Account Number</h4>
+                            <p>${contact.offeringAccount.accountNumber}</p>
+                        </div>
+                    </div>
+                `;
             }
         }
     } catch (error) {
@@ -655,6 +727,23 @@ async function loadOfferingDetails() {
 function setupTestimonyForm() {
     const form = document.getElementById('testimonyForm');
     const feedback = document.getElementById('testimonyFeedback');
+    const toggleBtn = document.getElementById('toggleTestimonyBtn');
+    const formContainer = document.getElementById('testimonyFormContainer');
+
+    toggleBtn?.addEventListener('click', () => {
+        const isActive = formContainer.classList.toggle('active');
+        toggleBtn.classList.toggle('active');
+        
+        if (isActive) {
+            toggleBtn.innerHTML = '<i data-lucide="minus-circle"></i> Hide Form';
+        } else {
+            toggleBtn.innerHTML = '<i data-lucide="plus-circle"></i> Share Your Testimony';
+        }
+        
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+    });
     
     form?.addEventListener('submit', async (e) => {
         e.preventDefault();
